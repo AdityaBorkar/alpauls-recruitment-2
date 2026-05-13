@@ -1,0 +1,6 @@
+.env
+logs/
+worktrees/
+
+opencode-auth.json
+opencode-config.json

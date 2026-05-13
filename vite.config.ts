@@ -5,15 +5,20 @@ import viteReact from "@vitejs/plugin-react";
 import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
 
-const config = defineConfig({
+export default defineConfig({
+  envPrefix: "PUBLIC_",
   plugins: [
     devtools(),
-    nitro({ rollupConfig: { external: [/^@sentry\//] } }),
+    nitro({
+      rollupConfig: {
+        external: [/^@sentry\//],
+      },
+    }),
     tailwindcss(),
     tanstackStart(),
     viteReact(),
   ],
-  resolve: { tsconfigPaths: true },
+  resolve: {
+    tsconfigPaths: true,
+  },
 });
-
-export default config;

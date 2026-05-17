@@ -1,0 +1,84 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { ArrowLeft } from "lucide-react";
+
+import { MemberForm } from "@/components/members/member-form";
+import type { UserOption } from "@/components/members/member-form";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { orpc } from "@/rpc/client";
+
+export const Route = createFileRoute("/(protected)/settings/members/new")({
+  component: NewMemberPage,
+});
+
+function NewMemberPage() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const { data: users } = useQuery(
+    orpc.admin.listUsers.queryOptions({ input: {} }),
+  );
+
+  const userOptions: UserOption[] = (users ?? []).map((u) => ({
+    email: u.email,
+    id: u.id,
+    name: u.name,
+    role: u.role,
+  }));
+
+  const createMutation = useMutation({
+    mutationFn: (input: Record<string, any>) =>
+      orpc.admin.createUser.call(input as any),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["admin"] });
+      navigate({
+        params: { memberId: data.id },
+        to: "/settings/members/$memberId",
+      });
+    },
+  });
+
+  return (
+    <div className="space-y-6 p-6">
+      <div className="flex items-center gap-3">
+        <Button
+          onClick={() => navigate({ to: "/settings/members" })}
+          size="icon-sm"
+          variant="ghost"
+        >
+          <ArrowLeft className="h-4 w-4" />
+        </Button>
+        <div>
+          <h2 className="font-semibold text-lg">Add Team Member</h2>
+          <p className="text-muted-foreground text-sm">
+            Create a new member account
+          </p>
+        </div>
+      </div>
+
+      <Card className="max-w-2xl">
+        <CardHeader>
+          <CardTitle>Member Details</CardTitle>
+          <CardDescription>
+            Enter the details for the new team member
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <MemberForm
+            isPending={createMutation.isPending}
+            mode="create"
+            onSubmit={(values) => createMutation.mutate(values)}
+            users={userOptions}
+          />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

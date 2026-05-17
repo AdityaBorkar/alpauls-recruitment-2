@@ -1,0 +1,76 @@
+{
+  "cli_version": "0.6.1",
+  "checkpoint_id": "8ff703cee45a",
+  "session_id": "ses_1c9b06ceeffesG6EgrOwZEoDKy",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-17T14:34:48.921672587Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "src/components/forms/client-form.tsx",
+    "src/components/forms/member-form.tsx",
+    "src/lib/form-schemas/auth.ts",
+    "src/lib/form-schemas/client.ts",
+    "src/lib/form-schemas/~utils.ts",
+    "src/rpc/router/admin.ts",
+    "src/rpc/router/client.ts"
+  ],
+  "agent": "OpenCode",
+  "model": "GLM-5.1",
+  "turn_id": "72a9b412c754",
+  "token_usage": {
+    "input_tokens": 35764,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 92416,
+    "output_tokens": 4348,
+    "api_call_count": 6
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-17T14:34:48.912629354Z",
+    "agent_lines": 70,
+    "agent_removed": 141,
+    "human_added": 0,
+    "human_modified": 77,
+    "human_removed": 17,
+    "total_committed": 147,
+    "total_lines_changed": 343,
+    "agent_percentage": 61.51603498542274,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 40,
+      "user_lines_removed": 94,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "src/components/forms/client-form.tsx": 5,
+        "src/components/forms/member-form.tsx": 5,
+        "src/lib/form-schemas/auth.ts": 7,
+        "src/lib/form-schemas/client.ts": 4,
+        "src/lib/form-schemas/~utils.ts": 16,
+        "src/rpc/router/admin.ts": 1,
+        "src/rpc/router/client.ts": 2
+      },
+      "user_removed_per_file": {
+        "src/components/forms/client-form.tsx": 5,
+        "src/components/forms/member-form.tsx": 13,
+        "src/lib/form-schemas/auth.ts": 37,
+        "src/lib/form-schemas/client.ts": 36,
+        "src/rpc/router/admin.ts": 1,
+        "src/rpc/router/client.ts": 2
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 39,
+      "agent_lines_removed": 94
+    }
+  ]
+}

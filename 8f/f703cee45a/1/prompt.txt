@@ -1,0 +1,11 @@
+I need to understand the following for planning updates to client-form.tsx and member-form.tsx to match contract-form.tsx patterns:
+
+1. What RPC endpoints exist for `rpc.users.list` and `rpc.client.list`? Look at `src/rpc/router/index.ts` and the relevant service/router files.
+2. What does `#/forms` export? Look at `integrations/forms/` to understand the `Field` and `Form` components - specifically whether `Form` supports direct children (no render props) and how `Field` works.
+3. What does the `SupervisorCombobox` component look like? (`src/components/supervisor-combobox.tsx`)
+4. What does the `LogoUpload` component look like? (`src/components/logo-upload.tsx`)
+5. What does the `PermissionsEditor` component look like? (`src/components/permissions-editor.tsx`)
+6. What are the form schemas for client and auth? (`src/lib/form-schemas/client.ts` and `src/lib/form-schemas/auth.ts`)
+7. What callers of `ClientForm` and `MemberForm` exist? Search for imports/usages of these components.
+
+Return all the relevant code snippets and findings.

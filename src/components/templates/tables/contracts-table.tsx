@@ -1,7 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { format } from "date-fns";
 
-import type { ContractItem } from "@/components/contracts/types";
+import type { ContractItem } from "@/components/types";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {

@@ -7,11 +7,11 @@ import {
 import { useQuery } from "@tanstack/react-query";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { orpc } from "@/rpc/client";
+import { rpc } from "@/rpc/client";
 
 export function DashboardStats() {
   const { data, isLoading } = useQuery(
-    orpc.task.stats.queryOptions({ input: {} }),
+    rpc.task.stats.queryOptions({ input: {} }),
   );
 
   const stats = [

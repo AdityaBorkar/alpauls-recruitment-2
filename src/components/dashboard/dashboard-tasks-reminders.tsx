@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { orpc } from "@/rpc/client";
+import { rpc } from "@/rpc/client";
 
 import type { TaskListResponse } from "../tasks/types";
 import { DashboardRecentTasksContent } from "./dashboard-recent-tasks";
@@ -10,7 +10,7 @@ import { DashboardRemindersContent } from "./dashboard-reminders";
 
 export function DashboardTasksReminders() {
   const { data: tasksData, isLoading: tasksLoading } = useQuery(
-    orpc.task.list.queryOptions({
+    rpc.task.list.queryOptions({
       input: {
         archived: false,
         limit: 5,
@@ -21,7 +21,7 @@ export function DashboardTasksReminders() {
   );
 
   const { data: remindersData, isLoading: remindersLoading } = useQuery(
-    orpc.reminder.list.queryOptions({ input: {} }),
+    rpc.reminder.list.queryOptions({ input: {} }),
   );
 
   const tasks = (tasksData as TaskListResponse | undefined)?.items ?? [];

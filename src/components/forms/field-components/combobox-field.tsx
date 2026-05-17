@@ -17,14 +17,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import type { FieldMeta } from "../use-schema-form";
+import type { FieldMeta } from "../use-form";
 
 type ComboboxOption = Record<string, any>;
 
-type ComboboxConfig = {
-  options: ComboboxOption[];
-  getOptionLabel?: (option: ComboboxOption) => string;
-  getOptionValue?: (option: ComboboxOption) => string | number;
+type ComboboxConfig<TOption extends ComboboxOption = ComboboxOption> = {
+  options?: TOption[];
+  getOptionLabel?: (option: TOption) => string;
+  getOptionValue?: (option: TOption) => string | number;
   searchPlaceholder?: string;
   emptyMessage?: string;
 };
@@ -33,7 +33,7 @@ type ComboboxFieldProps = {
   field: ControllerRenderProps;
   meta: FieldMeta | undefined;
   disabled: boolean | undefined;
-  config: ComboboxConfig | undefined;
+  config: ComboboxConfig<any> | undefined;
 };
 
 function defaultGetOptionLabel(o: ComboboxOption): string {

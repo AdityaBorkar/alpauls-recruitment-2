@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { orpc } from "@/rpc/client";
+import { rpc } from "@/rpc/client";
 
 export const Route = createFileRoute("/(protected)/(app)/clients/$clientId")({
   component: ClientDetailPage,
@@ -67,13 +67,13 @@ function ClientDetailPage() {
   const numericId = Number.parseInt(clientId, 10);
 
   const { data: clientData, isLoading } = useQuery(
-    orpc.client.getById.queryOptions({ input: { id: numericId } }),
+    rpc.client.getById.queryOptions({ input: { id: numericId } }),
   );
 
   const client = clientData as ClientData | undefined;
 
   const { data: eventsData } = useQuery(
-    orpc.client.listEvents.queryOptions({
+    rpc.client.listEvents.queryOptions({
       input: { clientId: numericId },
     }),
   );
@@ -85,8 +85,8 @@ function ClientDetailPage() {
 
   const updateMutation = useMutation({
     mutationFn: (input: Record<string, unknown>) =>
-      orpc.client.update.call({ id: numericId, ...input } as Parameters<
-        typeof orpc.client.update.call
+      rpc.client.update.call({ id: numericId, ...input } as Parameters<
+        typeof rpc.client.update.call
       >[0]),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["client"] });
@@ -95,7 +95,7 @@ function ClientDetailPage() {
   });
 
   const archiveMutation = useMutation({
-    mutationFn: () => orpc.client.archive.call({ id: numericId }),
+    mutationFn: () => rpc.client.archive.call({ id: numericId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["client"] });
       navigate({ to: "/clients" });

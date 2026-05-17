@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import type { FieldMeta } from "../use-schema-form";
+import type { FieldMeta } from "../use-form";
 
 type EnumFieldProps = {
   field: ControllerRenderProps;

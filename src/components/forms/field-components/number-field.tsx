@@ -2,7 +2,7 @@ import type { ControllerRenderProps } from "react-hook-form";
 
 import { Input } from "@/components/ui/input";
 
-import type { FieldMeta } from "../use-schema-form";
+import type { FieldMeta } from "../use-form";
 
 type NumberFieldProps = {
   field: ControllerRenderProps;

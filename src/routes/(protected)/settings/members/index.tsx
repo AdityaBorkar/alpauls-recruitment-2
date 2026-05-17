@@ -9,12 +9,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
 
-import { MembersTable } from "@/components/members/members-table";
-import { TeamHierarchyCanvas } from "@/components/members/team-hierarchy-canvas";
+import { TeamHierarchyCanvas } from "@/components/team-hierarchy-canvas";
+import { MembersTable } from "@/components/templates/tables/members-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { orpc } from "@/rpc/client";
+import { rpc } from "@/rpc/client";
 
 const searchSchema = z.object({
   view: z.enum(["table", "canvas"]).default("table"),
@@ -31,7 +31,7 @@ function MembersPage() {
   const [search, setSearch] = useState("");
 
   const { data: members, isLoading } = useQuery(
-    orpc.admin.listUsers.queryOptions({ input: {} }),
+    rpc.admin.listUsers.queryOptions({ input: {} }),
   );
 
   function setView(v: string) {

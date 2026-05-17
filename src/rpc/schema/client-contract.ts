@@ -1,9 +1,6 @@
 import { z } from "zod";
 
-export {
-  contractFormSchema as createContractSchema,
-  contractUpdateFormSchema as updateContractSchema,
-} from "@/schema/client-contract-form";
+export { ClientContract_FormSchema } from "@/schema/forms/client-contract";
 
 const contractStatusSchema = z.enum(["active", "inactive"]);
 
@@ -27,6 +24,22 @@ export const getContractByIdSchema = z.object({
 
 export const archiveContractSchema = z.object({
   id: z.number().int().positive(),
+});
+
+export const updateContractSchema = z.object({
+  archived: z.boolean().optional(),
+  assigneeId: z.string().optional(),
+  clientId: z.number().int().positive().optional(),
+  description: z.string().optional(),
+  endDate: z.string().optional(),
+  id: z.number().int().positive(),
+  pdfLink: z.string().optional(),
+  referenceNumber: z.string().optional(),
+  rmId: z.string().optional(),
+  signedDate: z.string().optional(),
+  startDate: z.string().optional(),
+  status: contractStatusSchema.optional(),
+  title: z.string().optional(),
 });
 
 export const listContractEventsSchema = z.object({

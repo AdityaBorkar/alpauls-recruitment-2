@@ -3,14 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { orpc } from "@/rpc/client";
+import { rpc } from "@/rpc/client";
 
 import type { TaskListResponse } from "../tasks/types";
 import { STATUS_COLORS, STATUS_LABELS } from "../tasks/types";
 
 export function DashboardRecentTasks() {
   const { data, isLoading } = useQuery(
-    orpc.task.list.queryOptions({
+    rpc.task.list.queryOptions({
       input: {
         archived: false,
         limit: 5,

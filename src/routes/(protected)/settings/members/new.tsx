@@ -2,8 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 
-import { MemberForm } from "@/components/members/member-form";
-import type { UserOption } from "@/components/members/member-form";
+import { MemberForm } from "@/components/templates/forms/member-form";
+import type { UserOption } from "@/components/types";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { orpc } from "@/rpc/client";
+import { rpc } from "@/rpc/client";
 
 export const Route = createFileRoute("/(protected)/settings/members/new")({
   component: NewMemberPage,
@@ -23,7 +23,7 @@ function NewMemberPage() {
   const queryClient = useQueryClient();
 
   const { data: users } = useQuery(
-    orpc.admin.listUsers.queryOptions({ input: {} }),
+    rpc.admin.listUsers.queryOptions({ input: {} }),
   );
 
   const userOptions: UserOption[] = (users ?? []).map((u) => ({
@@ -35,7 +35,7 @@ function NewMemberPage() {
 
   const createMutation = useMutation({
     mutationFn: (input: Record<string, any>) =>
-      orpc.admin.createUser.call(input as any),
+      rpc.admin.createUser.call(input as any),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["admin"] });
       navigate({

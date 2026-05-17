@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { orpc } from "@/rpc/client";
+import { rpc } from "@/rpc/client";
 
 type ReminderItem = {
   id: number;
@@ -18,7 +18,7 @@ type RemindersResponse = ReminderItem[];
 
 export function DashboardReminders() {
   const { data, isLoading } = useQuery(
-    orpc.reminder.list.queryOptions({ input: {} }),
+    rpc.reminder.list.queryOptions({ input: {} }),
   );
 
   const reminders = (data as RemindersResponse | undefined) ?? [];

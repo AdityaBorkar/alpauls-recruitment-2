@@ -9,6 +9,14 @@ import {
   clientUpdate,
 } from "./client";
 import {
+  contractArchive,
+  contractCreate,
+  contractGetById,
+  contractList,
+  contractListEvents,
+  contractUpdate,
+} from "./client-contract";
+import {
   notificationList,
   notificationMarkAllRead,
   notificationMarkRead,
@@ -25,6 +33,7 @@ import {
   taskStats,
   taskUpdate,
 } from "./task";
+import { usersList } from "./users";
 
 export default {
   admin,
@@ -36,6 +45,14 @@ export default {
     list: clientList,
     listEvents: clientListEvents,
     update: clientUpdate,
+  },
+  contract: {
+    archive: contractArchive,
+    create: contractCreate,
+    getById: contractGetById,
+    list: contractList,
+    listEvents: contractListEvents,
+    update: contractUpdate,
   },
   notification: {
     list: notificationList,
@@ -57,5 +74,8 @@ export default {
     removeLink: taskRemoveLink,
     stats: taskStats,
     update: taskUpdate,
+  },
+  users: {
+    list: usersList,
   },
 };

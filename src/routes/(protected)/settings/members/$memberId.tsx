@@ -4,8 +4,8 @@ import { format } from "date-fns";
 import { ArrowLeft, Shield, Trash2, User } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { PermissionsEditor } from "@/components/members/permissions-editor";
-import { SupervisorCombobox } from "@/components/members/supervisor-combobox";
+import { PermissionsEditor } from "@/components/permissions-editor";
+import { SupervisorCombobox } from "@/components/templates/inputs/supervisor-combobox";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -31,7 +31,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
 import type { PermissionSet } from "@/lib/auth/access-control";
 import { ROLE_DISPLAY_NAMES } from "@/lib/constants";
-import { orpc } from "@/rpc/client";
+import { rpc } from "@/rpc/client";
 
 type RoleCode =
   | "admin"
@@ -75,7 +75,7 @@ function MemberDetailPage() {
   const queryClient = useQueryClient();
 
   const { data: users, isLoading } = useQuery(
-    orpc.admin.listUsers.queryOptions({ input: {} }),
+    rpc.admin.listUsers.queryOptions({ input: {} }),
   );
 
   const member = users?.find((u) => u.id === memberId);
@@ -120,8 +120,8 @@ function MemberDetailPage() {
 
   const updateMutation = useMutation({
     mutationFn: (input: Record<string, unknown>) =>
-      orpc.admin.updateUser.call({ userId: memberId, ...input } as Parameters<
-        typeof orpc.admin.updateUser.call
+      rpc.admin.updateUser.call({ userId: memberId, ...input } as Parameters<
+        typeof rpc.admin.updateUser.call
       >[0]),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin"] });
@@ -131,7 +131,7 @@ function MemberDetailPage() {
   });
 
   const archiveMutation = useMutation({
-    mutationFn: () => orpc.admin.archiveUser.call({ userId: memberId }),
+    mutationFn: () => rpc.admin.archiveUser.call({ userId: memberId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin"] });
       navigate({ to: "/settings/members" });
@@ -140,7 +140,7 @@ function MemberDetailPage() {
 
   const resetPasswordMutation = useMutation({
     mutationFn: (input: { newPassword: string; userId: string }) =>
-      orpc.admin.resetPassword.call(input),
+      rpc.admin.resetPassword.call(input),
     onSuccess: () => {
       setShowPasswordReset(false);
       setNewPassword("");

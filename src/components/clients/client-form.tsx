@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { z } from "zod";
 
 import { Field, Form } from "@/components/forms";
 import { Button } from "@/components/ui/button";
@@ -12,12 +13,15 @@ type UserOption = {
   role: string | null;
 };
 
+type CreateValues = z.infer<typeof clientFormSchema>;
+type UpdateValues = z.infer<typeof clientUpdateFormSchema>;
+
 type ClientFormProps = {
   mode: "create" | "edit";
-  onSubmit: (values: Record<string, any>) => void;
+  onSubmit: (values: CreateValues | UpdateValues) => void;
   isPending: boolean;
   users?: UserOption[];
-  defaultValues?: Record<string, any>;
+  defaultValues?: Partial<CreateValues> | Partial<UpdateValues>;
 };
 
 function slugify(text: string): string {
@@ -37,18 +41,19 @@ export function ClientForm({
   const [slugManuallyEdited] = useState(mode === "edit");
   const schema = mode === "create" ? clientFormSchema : clientUpdateFormSchema;
 
-  function handleSubmit(values: Record<string, any>) {
-    if (!slugManuallyEdited && values.name) {
-      values.slug = slugify(values.name);
-    }
-    onSubmit(values);
+  function handleSubmit(values: CreateValues | UpdateValues) {
+    const submitted =
+      slugManuallyEdited || !("name" in values && values.name)
+        ? values
+        : { ...values, slug: slugify(values.name) };
+    onSubmit(submitted);
   }
 
   return (
     <Form
       className="space-y-6"
-      defaultValues={defaultValues as any}
-      onSubmit={handleSubmit as any}
+      defaultValues={defaultValues}
+      onSubmit={handleSubmit}
       schema={schema}
     >
       {({ watch, setValue }) => {
@@ -59,9 +64,9 @@ export function ClientForm({
 
         return (
           <>
-            <SmartField name="name" />
-            <SmartField name="legalName" />
-            <SmartField
+            <Field name="name" />
+            <Field name="legalName" />
+            <Field
               name="logo"
               overrides={({ field }) => (
                 <LogoUpload
@@ -70,14 +75,14 @@ export function ClientForm({
                 />
               )}
             />
-            <SmartField name="slug" />
-            <SmartField name="locations" />
-            <SmartField name="internalNotes" />
+            <Field name="slug" />
+            <Field name="locations" />
+            <Field name="internalNotes" />
             {users.length > 0 && (
-              <SmartField
+              <Field
                 config={{
-                  getOptionLabel: (o: UserOption) => o.name,
-                  getOptionValue: (o: UserOption) => o.id,
+                  getOptionLabel: ({ name }) => name,
+                  getOptionValue: ({ id }) => id,
                   options: users,
                   searchPlaceholder: "Search users...",
                 }}

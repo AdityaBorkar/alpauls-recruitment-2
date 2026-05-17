@@ -4,11 +4,8 @@ import { format } from "date-fns";
 import { ArrowLeft, FileText } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { ContractForm } from "@/components/contracts/contract-form";
-import type {
-  ContractFormValues,
-  UserOption,
-} from "@/components/contracts/types";
+import { ContractForm } from "@/components/templates/forms/contract-form";
+import type { ContractFormValues, UserOption } from "@/components/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,7 +18,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { orpc } from "@/rpc/client";
+import { rpc } from "@/rpc/client";
 
 const STATUS_STYLES: Record<string, { label: string; className: string }> = {
   active: {
@@ -55,11 +52,11 @@ function ContractDetailPage() {
   const queryClient = useQueryClient();
 
   const { data: contract, isLoading } = useQuery(
-    orpc.contract.getById.queryOptions({ input: { id: Number(contractId) } }),
+    rpc.contract.getById.queryOptions({ input: { id: Number(contractId) } }),
   );
 
   const { data: users } = useQuery(
-    orpc.admin.listUsers.queryOptions({ input: {} }),
+    rpc.admin.listUsers.queryOptions({ input: {} }),
   );
 
   const userOptions: UserOption[] = (users ?? []).map((u) => ({
@@ -104,10 +101,10 @@ function ContractDetailPage() {
 
   const updateMutation = useMutation({
     mutationFn: (input: Record<string, unknown>) =>
-      orpc.contract.update.call({
+      rpc.contract.update.call({
         id: Number(contractId),
         ...input,
-      } as Parameters<typeof orpc.contract.update.call>[0]),
+      } as Parameters<typeof rpc.contract.update.call>[0]),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contract"] });
       setIsEditing(false);
@@ -115,7 +112,7 @@ function ContractDetailPage() {
   });
 
   const archiveMutation = useMutation({
-    mutationFn: () => orpc.contract.archive.call({ id: Number(contractId) }),
+    mutationFn: () => rpc.contract.archive.call({ id: Number(contractId) }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contract"] });
       navigate({ to: "/contracts" });

@@ -3,7 +3,7 @@ import type { ControllerRenderProps } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-import type { FieldMeta } from "../use-schema-form";
+import type { FieldMeta } from "../use-form";
 
 type StringFieldProps = {
   field: ControllerRenderProps;

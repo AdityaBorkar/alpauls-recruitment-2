@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 
-import type { FieldMeta } from "../use-schema-form";
+import type { FieldMeta } from "../use-form";
 
 type BooleanFieldProps = {
   field: ControllerRenderProps;

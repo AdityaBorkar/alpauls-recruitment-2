@@ -1,23 +1,35 @@
+import type { ControllerRenderProps } from "react-hook-form";
 import { Controller } from "react-hook-form";
 
 import { Label } from "@/components/ui/label";
 
 import { useFormContext } from "./context";
 import { BooleanField } from "./field-components/boolean-field";
+import type {
+  ComboboxConfig,
+  ComboboxOption,
+} from "./field-components/combobox-field";
 import { ComboboxField } from "./field-components/combobox-field";
 import { EnumField } from "./field-components/enum-field";
+import type { FieldArrayConfig } from "./field-components/field-array";
 import { FieldArray } from "./field-components/field-array";
 import { NumberField } from "./field-components/number-field";
 import { StringField } from "./field-components/string-field";
 import type { FieldDef, FieldMeta } from "./use-form";
 
-type FieldProps = {
+type FieldConfig<T extends ComboboxOption> =
+  | ComboboxConfig<T>
+  | FieldArrayConfig;
+
+export type { FieldConfig };
+
+type FieldProps<T extends ComboboxOption> = {
   name: string;
   disabled?: boolean;
-  config?: Record<string, any>;
+  config?: FieldConfig<T>;
   overrides?: (props: {
-    field: any;
-    config: Record<string, any>;
+    field: ControllerRenderProps;
+    config: FieldConfig<T> | undefined;
     error?: string;
     disabled?: boolean;
   }) => React.ReactNode;
@@ -51,7 +63,7 @@ function resolveFieldDef(fieldDef: FieldDef): {
   };
 }
 
-function Field({ name, disabled, config, overrides }: FieldProps) {
+function Field<T>({ name, disabled, config, overrides }: FieldProps<T>) {
   const { fieldMap } = useFormContext();
 
   const fieldDef = fieldMap[name];
@@ -71,7 +83,7 @@ function Field({ name, disabled, config, overrides }: FieldProps) {
           return (
             <div className="space-y-2">
               <Label>{label}</Label>
-              {overrides({ config: config ?? {}, disabled, error, field })}
+              {overrides({ config, disabled, error, field })}
               {error && <p className="text-destructive text-xs">{error}</p>}
               {meta?.description && !error && (
                 <p className="text-muted-foreground text-xs">
@@ -87,7 +99,7 @@ function Field({ name, disabled, config, overrides }: FieldProps) {
             <div className="space-y-2">
               <Label>{label}</Label>
               <FieldArray
-                config={config}
+                config={config as FieldArrayConfig | undefined}
                 control={field}
                 disabled={disabled}
                 elementFields={resolved.arrayElement}
@@ -122,12 +134,12 @@ function renderField(
   field: any,
   meta: FieldMeta | undefined,
   disabled: boolean | undefined,
-  config: Record<string, any> | undefined,
+  config: FieldConfig | undefined,
 ): React.ReactNode {
   if (meta?.component === "combobox") {
     return (
       <ComboboxField
-        config={config as any}
+        config={config as ComboboxConfig<any> | undefined}
         disabled={disabled}
         field={field}
         meta={meta}

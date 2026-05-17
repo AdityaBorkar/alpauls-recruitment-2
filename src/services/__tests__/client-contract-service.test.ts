@@ -10,7 +10,7 @@ import {
   listContractEvents,
   listContracts,
   updateContract,
-} from "@/services/client-contract-service";
+} from "@/rpc/router/client-contract";
 
 let db: TestDb;
 let pglite: PGlite;

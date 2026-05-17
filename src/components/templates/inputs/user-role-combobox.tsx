@@ -1,6 +1,7 @@
 import { IconChevronDown } from "@tabler/icons-react";
 import { useState } from "react";
 
+import type { UserOption } from "@/components/types";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -16,8 +17,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ROLE_DISPLAY_NAMES } from "@/lib/constants";
-
-import type { UserOption } from "./types";
 
 type UserRoleComboboxProps = {
   users: UserOption[];

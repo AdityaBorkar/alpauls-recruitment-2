@@ -4,7 +4,7 @@ import { useFieldArray } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import type { FieldMap, FieldMeta } from "../use-schema-form";
+import type { FieldMap, FieldMeta } from "../use-form";
 
 type FieldArrayConfig = {
   addLabel?: string;

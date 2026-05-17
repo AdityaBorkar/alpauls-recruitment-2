@@ -4,19 +4,21 @@ import type { FieldErrors } from "react-hook-form";
 import { FormProvider, useForm } from "react-hook-form";
 import type { z } from "zod";
 
-import { FormContext } from "./form-context";
-import { buildDefaults, buildFieldMap } from "./use-schema-form";
+import { FormContext } from "./context";
+import { buildDefaults, buildFieldMap } from "./use-form";
 
 export type ValidationMode = "onBlur" | "onChange" | "onSubmit" | "all";
 
+type FormRenderMethods = ReturnType<typeof useForm>;
+
 export type FormProps<T extends z.ZodObject<any>> = {
   schema: T;
-  onSubmit: (values: Record<string, any>) => void;
+  onSubmit: (values: z.infer<T>) => void;
   onInvalid?: (errors: FieldErrors) => void;
-  defaultValues?: Record<string, any>;
+  defaultValues?: Partial<z.infer<T>>;
   validationMode?: ValidationMode;
   className?: string;
-  children: (methods: ReturnType<typeof useForm>) => React.ReactNode;
+  children: React.ReactNode | ((methods: FormRenderMethods) => React.ReactNode);
   ref?: React.Ref<any>;
 };
 
@@ -35,9 +37,9 @@ export function Form<T extends z.ZodObject<any>>({
   const schemaDefaults = buildDefaults(schema, defaultValuesProp);
 
   const methods = useForm({
-    defaultValues: schemaDefaults as any,
+    defaultValues: schemaDefaults,
     mode: validationMode,
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema) as any,
     reValidateMode: "onChange",
   });
 
@@ -49,7 +51,7 @@ export function Form<T extends z.ZodObject<any>>({
     e.preventDefault();
     methods.handleSubmit((values) => {
       const parsed = schema.parse(values);
-      onSubmit(parsed as Record<string, any>);
+      onSubmit(parsed as z.infer<T>);
     }, onInvalid as any)();
   }
 
@@ -57,7 +59,7 @@ export function Form<T extends z.ZodObject<any>>({
     <FormContext value={{ fieldMap, formId: uid }}>
       <FormProvider {...methods}>
         <form className={className} onSubmit={handleSubmit}>
-          {children(methods)}
+          {typeof children === "function" ? children(methods) : children}
         </form>
       </FormProvider>
     </FormContext>

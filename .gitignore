@@ -11,3 +11,6 @@ node_modules
 .codegraphcontext
 .expect
 .sandcastle
+
+./src/routeTree.gen.ts
+./worker-configuration.d.ts

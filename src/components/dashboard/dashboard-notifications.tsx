@@ -11,7 +11,7 @@ import { formatDistanceToNow } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { orpc } from "@/rpc/client";
+import { rpc } from "@/rpc/client";
 
 const typeIconMap = {
   reminder_triggered: IconClock,
@@ -41,7 +41,7 @@ export function DashboardNotifications() {
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery(
-    orpc.notification.list.queryOptions({ input: { limit: 5 } }),
+    rpc.notification.list.queryOptions({ input: { limit: 5 } }),
   );
 
   const result = (data as NotificationsResponse | undefined) ?? {
@@ -50,10 +50,10 @@ export function DashboardNotifications() {
   };
 
   const markAllReadMutation = useMutation(
-    orpc.notification.markAllRead.mutationOptions({
+    rpc.notification.markAllRead.mutationOptions({
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: orpc.notification.list.queryOptions({ input: {} }).queryKey,
+          queryKey: rpc.notification.list.queryOptions({ input: {} }).queryKey,
         });
       },
     }),

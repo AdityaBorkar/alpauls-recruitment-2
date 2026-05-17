@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { orpc } from "@/rpc/client";
+import { rpc } from "@/rpc/client";
 
 export const Route = createFileRoute("/(protected)/(app)/clients/new")({
   component: NewClientPage,
@@ -23,7 +23,7 @@ function NewClientPage() {
   const queryClient = useQueryClient();
 
   const { data: users } = useQuery(
-    orpc.admin.listUsers.queryOptions({ input: {} }),
+    rpc.admin.listUsers.queryOptions({ input: {} }),
   );
 
   const userOptions: UserOption[] = (users ?? [])
@@ -36,7 +36,7 @@ function NewClientPage() {
 
   const createMutation = useMutation({
     mutationFn: (input: Record<string, any>) =>
-      orpc.client.create.call(input as any),
+      rpc.client.create.call(input as any),
     onSuccess: (data) => {
       if (!data) return;
       queryClient.invalidateQueries({ queryKey: ["client"] });

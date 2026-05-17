@@ -33,14 +33,7 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": [
-      "**",
-      "!worker-configuration.d.ts",
-      "!.wrangler/**/*",
-      "!.opencode/**/*",
-      "!.agents/**/*",
-      "!src/routeTree.gen.ts"
-    ]
+    "includes": ["**"]
   },
   "formatter": {
     "attributePosition": "auto",
@@ -92,7 +85,7 @@
   },
   "overrides": [
     {
-      "includes": ["./packages/web-server/src/components/ui/**"],
+      "includes": ["./src/components/ui/**"],
       "linter": {
         "rules": {
           "recommended": false

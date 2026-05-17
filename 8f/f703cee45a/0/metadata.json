@@ -1,0 +1,70 @@
+{
+  "cli_version": "0.6.1",
+  "checkpoint_id": "8ff703cee45a",
+  "session_id": "ses_1c9b043ffffe457oQhly1zL6B8",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-17T14:34:47.082842766Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "AGENTS.md",
+    "src/components/forms/client-form.tsx",
+    "src/components/forms/member-form.tsx",
+    "src/lib/form-schemas/auth.ts",
+    "src/lib/form-schemas/client.ts",
+    "src/lib/form-schemas/~utils.ts",
+    "src/rpc/router/admin.ts",
+    "src/rpc/router/client.ts"
+  ],
+  "agent": "OpenCode",
+  "model": "GLM-5.1",
+  "turn_id": "b76e70ddb030",
+  "token_usage": {
+    "input_tokens": 61596,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 682816,
+    "output_tokens": 3415,
+    "api_call_count": 15
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-17T14:34:47.071339773Z",
+    "agent_lines": 80,
+    "agent_removed": 161,
+    "human_added": 0,
+    "human_modified": 77,
+    "human_removed": 17,
+    "total_committed": 157,
+    "total_lines_changed": 373,
+    "agent_percentage": 64.6112600536193,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 40,
+      "user_lines_removed": 94,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "src/components/forms/client-form.tsx": 5,
+        "src/components/forms/member-form.tsx": 5,
+        "src/lib/form-schemas/auth.ts": 7,
+        "src/lib/form-schemas/client.ts": 4,
+        "src/lib/form-schemas/~utils.ts": 16,
+        "src/rpc/router/admin.ts": 1,
+        "src/rpc/router/client.ts": 2
+      },
+      "user_removed_per_file": {
+        "src/components/forms/client-form.tsx": 5,
+        "src/components/forms/member-form.tsx": 13,
+        "src/lib/form-schemas/auth.ts": 37,
+        "src/lib/form-schemas/client.ts": 36,
+        "src/rpc/router/admin.ts": 1,
+        "src/rpc/router/client.ts": 2
+      }
+    }
+  ]
+}

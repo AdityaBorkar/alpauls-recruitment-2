@@ -1,0 +1,114 @@
+@src/components/templates/forms/contract-form.tsx Implement the users RPC endpoint as mentioned in the file.
+Called the Read tool with the following input: {"filePath":"/home/aditya/projects/alpauls-ats/src/components/templates/forms/contract-form.tsx"}
+<path>/home/aditya/projects/alpauls-ats/src/components/templates/forms/contract-form.tsx</path>
+<type>file</type>
+<content>
+1: import { useQuery } from "@tanstack/react-query";
+2: import { useFormContext } from "react-hook-form";
+3: import type { z } from "zod";
+4: 
+5: import { Field, Form } from "@/components/forms";
+6: import { Button } from "@/components/ui/button";
+7: import { rpc } from "@/rpc/client";
+8: import { ClientContract_FormSchema } from "@/schema/forms/client-contract";
+9: 
+10: type ClientContractType = z.infer<typeof ClientContract_FormSchema>;
+11: 
+12: export function ContractForm({
+13:   mode,
+14:   onSubmit,
+15:   isPending,
+16:   defaultValues,
+17: }: {
+18:   mode: "create" | "edit";
+19:   onSubmit: (values: ClientContractType) => void;
+20:   isPending: boolean;
+21:   defaultValues?: Partial<ClientContractType>;
+22: }) {
+23:   const { data: clients } = useQuery(
+24:     rpc.client.list.queryOptions({ input: { limit: 100 } }),
+25:   );
+26: 
+27:   const { data: bd_users } = useQuery(
+28:     rpc.users.list.queryOptions({ input: { limit: 100, role: "bd" } }),
+29:   );
+30: 
+31:   const { data: rm_users } = useQuery(
+32:     rpc.users.list.queryOptions({ input: { limit: 100, role: "rm" } }),
+33:   );
+34: 
+35:   return (
+36:     <Form
+37:       className="space-y-6"
+38:       defaultValues={defaultValues}
+39:       onSubmit={onSubmit}
+40:       schema={ClientContract_FormSchema}
+41:     >
+42:       <Field name="title" />
+43:       <Field name="referenceNumber" />
+44:       <Field name="description" />
+45:       <Field
+46:         config={{
+47:           getOptionLabel: ({ name }) => name,
+48:           getOptionValue: ({ id }) => id,
+49:           options: clients?.items || [],
+50:           // placeholder: "Search clients...",
+51:         }}
+52:         name="clientId"
+53:       />
+54:       <Field
+55:         config={{
+56:           getOptionLabel: ({ name }) => name,
+57:           getOptionValue: ({ id }) => id,
+58:           options: bd_users?.items,
+59:           // placeholder: "Search BD users...",
+60:         }}
+61:         name="assigneeId"
+62:       />
+63:       <Field
+64:         config={{
+65:           getOptionLabel: ({ name }) => name,
+66:           getOptionValue: ({ id }) => id,
+67:           options: rm_users?.items,
+68:           // placeholder: "Search RM users...",
+69:         }}
+70:         name="rmId"
+71:       />
+72:       <div className="grid grid-cols-3 gap-4">
+73:         <Field name="startDate" />
+74:         <Field name="endDate" />
+75:         <Field name="signedDate" />
+76:       </div>
+77:       <Field name="pdfLink" />
+78:       <Field name="status" />
+79:       <ContractFormActions isPending={isPending} mode={mode} />
+80:     </Form>
+81:   );
+82: }
+83: 
+84: function ContractFormActions({
+85:   mode,
+86:   isPending,
+87: }: {
+88:   mode: "create" | "edit";
+89:   isPending: boolean;
+90: }) {
+91:   const { watch } = useFormContext();
+92:   const title = watch("title");
+93:   const clientId = watch("clientId");
+94:   const assigneeId = watch("assigneeId");
+95: 
+96:   return (
+97:     <div className="flex gap-3">
+98:       <Button
+99:         disabled={isPending || !title || !clientId || !assigneeId}
+100:         type="submit"
+101:       >
+102:         {mode === "create" ? "Create Contract" : "Save Changes"}
+103:       </Button>
+104:     </div>
+105:   );
+106: }
+
+(End of file - total 106 lines)
+</content>

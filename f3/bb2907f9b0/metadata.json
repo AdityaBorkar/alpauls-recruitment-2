@@ -3,7 +3,7 @@
   "checkpoint_id": "f3bb2907f9b0",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 4,
+  "checkpoints_count": 6,
   "files_touched": [
     ".gitignore",
     ".vscode/settings.json",
@@ -32,6 +32,7 @@
     "src/components/members/permissions-editor.tsx",
     "src/components/members/supervisor-combobox.tsx",
     "src/components/members/team-hierarchy-canvas.tsx",
+    "src/components/templates/forms/contract-form.tsx",
     "src/components/ui/sidebar.tsx",
     "src/routeTree.gen.ts",
     "src/routes/(protected)/(app)/clients/$clientId.tsx",
@@ -45,11 +46,13 @@
     "src/rpc/client.ts",
     "src/rpc/router/client-contract.ts",
     "src/rpc/router/index.ts",
+    "src/rpc/router/users.ts",
     "src/rpc/schema.ts",
     "src/rpc/schema/__tests__/client-contract.test.ts",
     "src/rpc/schema/__tests__/task.test.ts",
     "src/rpc/schema/client-contract.ts",
     "src/rpc/schema/client.ts",
+    "src/rpc/schema/users.ts",
     "src/schema/client-contract-form.ts",
     "src/services/__tests__/client-contract-service.test.ts",
     "src/services/client-contract-service.ts"
@@ -66,13 +69,19 @@
       "transcript": "/f3/bb2907f9b0/1/full.jsonl",
       "content_hash": "/f3/bb2907f9b0/1/content_hash.txt",
       "prompt": "/f3/bb2907f9b0/1/prompt.txt"
+    },
+    {
+      "metadata": "/f3/bb2907f9b0/2/metadata.json",
+      "transcript": "/f3/bb2907f9b0/2/full.jsonl",
+      "content_hash": "/f3/bb2907f9b0/2/content_hash.txt",
+      "prompt": "/f3/bb2907f9b0/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 101657,
+    "input_tokens": 193426,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 1183872,
-    "output_tokens": 11212,
-    "api_call_count": 33
+    "cache_read_tokens": 2246656,
+    "output_tokens": 15615,
+    "api_call_count": 59
   }
 }

@@ -1,0 +1,1277 @@
+{
+  "info": {
+    "id": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+    "slug": "kind-engine",
+    "projectID": "046575e7d4f70fa788b139a1fd8f959b20715a69",
+    "directory": "/home/aditya/projects/alpauls-ats",
+    "path": "",
+    "parentID": "ses_1ca8be994ffe9CK7pZ3EdRLAUt",
+    "title": "Explore RPC and user architecture (@explore subagent)",
+    "agent": "explore",
+    "model": {
+      "id": "GLM-5.1",
+      "providerID": "wafer.ai",
+      "variant": "default"
+    },
+    "version": "1.14.50",
+    "summary": {
+      "additions": 1,
+      "deletions": 4,
+      "files": 1
+    },
+    "cost": 0,
+    "tokens": {
+      "input": 33880,
+      "output": 4655,
+      "reasoning": 251,
+      "cache": {
+        "read": 74432,
+        "write": 0
+      }
+    },
+    "permission": [
+      {
+        "permission": "todowrite",
+        "action": "deny",
+        "pattern": "*"
+      },
+      {
+        "permission": "task",
+        "action": "deny",
+        "pattern": "*"
+      }
+    ],
+    "time": {
+      "created": 1779013270065,
+      "updated": 1779013343317
+    }
+  },
+  "messages": [
+    {
+      "info": {
+        "role": "user",
+        "time": {
+          "created": 1779013270117
+        },
+        "tools": {
+          "todowrite": false,
+          "task": false
+        },
+        "agent": "explore",
+        "model": {
+          "providerID": "wafer.ai",
+          "modelID": "GLM-5.1"
+        },
+        "summary": {
+          "diffs": [
+            {
+              "file": "src/rpc/schema/client-contract.ts",
+              "patch": "Index: src/rpc/schema/client-contract.ts\n===================================================================\n--- src/rpc/schema/client-contract.ts\t\n+++ src/rpc/schema/client-contract.ts\t\n@@ -1,36 +1,33 @@\n import { z } from \"zod\";\n \n-export {\n-  ClientContract_FormSchema as createContractSchema,\n-  contractUpdateFormSchema as updateContractSchema,\n-} from \"@/schema/client-contract-form\";\n+export { ClientContract_FormSchema } from \"@/schema/forms/client-contract\";\n \n const contractStatusSchema = z.enum([\"active\", \"inactive\"]);\n \n export { contractStatusSchema };\n \n export const listContractsSchema = z.object({\n   archived: z.boolean().optional(),\n   assigneeId: z.array(z.string()).optional(),\n   clientId: z.number().int().positive().optional(),\n   cursor: z.string().optional(),\n   limit: z.number().int().min(1).max(100).optional(),\n   search: z.string().optional(),\n   sortBy: z.enum([\"title\", \"createdAt\", \"startDate\", \"endDate\"]).optional(),\n   sortOrder: z.enum([\"asc\", \"desc\"]).optional(),\n   status: z.array(contractStatusSchema).optional(),\n });\n \n export const getContractByIdSchema = z.object({\n   id: z.number().int().positive(),\n });\n \n export const archiveContractSchema = z.object({\n   id: z.number().int().positive(),\n });\n \n export const listContractEventsSchema = z.object({\n   contractId: z.number().int().positive(),\n   cursor: z.string().optional(),\n   limit: z.number().int().min(1).max(100).optional(),\n });\n",
+              "additions": 1,
+              "deletions": 4,
+              "status": "modified"
+            }
+          ]
+        },
+        "id": "msg_e35743a43001j6xMtSmJ7PWp4w",
+        "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh"
+      },
+      "parts": [
+        {
+          "type": "text",
+          "text": "I need to understand the existing RPC architecture and user-related code in this project. Please explore thoroughly and return:\n\n1. The full contents of `src/rpc/router/index.ts` - the main RPC router\n2. The full contents of `src/rpc/client.ts` - the RPC client\n3. The full contents of `src/rpc/middleware.ts` - the procedure chain\n4. The full contents of `src/rpc/context.ts` - the RPC context\n5. Find and show any existing RPC route files that implement list endpoints (like client.list) - check `src/rpc/router/` for all files\n6. The user-related schema in `src/schema/` - find and show the user table schema\n7. The access control file `src/lib/auth/access-control.ts` - show the resources, actions, and permission definitions\n8. The auth server file `src/lib/auth/server.ts` - to understand user model\n9. Any existing user service in `src/services/`\n10. Check if there's already a `src/rpc/router/users.ts` file\n\nReturn ALL file contents in full - do not truncate or summarize. This is critical for planning.",
+          "id": "prt_e35743a76001HOgXEbUn5Ocvo5",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35743a43001j6xMtSmJ7PWp4w"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_e35743a43001j6xMtSmJ7PWp4w",
+        "role": "assistant",
+        "mode": "explore",
+        "agent": "explore",
+        "path": {
+          "cwd": "/home/aditya/projects/alpauls-ats",
+          "root": "/home/aditya/projects/alpauls-ats"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 6794,
+          "input": 5595,
+          "output": 210,
+          "reasoning": 29,
+          "cache": {
+            "write": 0,
+            "read": 960
+          }
+        },
+        "modelID": "GLM-5.1",
+        "providerID": "wafer.ai",
+        "time": {
+          "created": 1779013270551,
+          "completed": 1779013273240
+        },
+        "finish": "tool-calls",
+        "id": "msg_e35743c17001E0Nxh4JNXuq2fi",
+        "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh"
+      },
+      "parts": [
+        {
+          "snapshot": "a77bbadd8c7afd42872a7cb9ffeb7fea650952ce",
+          "type": "step-start",
+          "id": "prt_e357441470016b5ZqxxwDRo5PI",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35743c17001E0Nxh4JNXuq2fi"
+        },
+        {
+          "type": "reasoning",
+          "text": "The user wants a thorough exploration of the RPC architecture and user-related code. Let me make multiple parallel calls to gather all the information requested.",
+          "time": {
+            "start": 1779013271881,
+            "end": 1779013272144
+          },
+          "id": "prt_e357441490011blO2zIHZsBseT",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35743c17001E0Nxh4JNXuq2fi"
+        },
+        {
+          "type": "text",
+          "text": "I'll systematically explore all the requested files. Let me start by reading the known files and searching for patterns in parallel.",
+          "time": {
+            "start": 1779013272145,
+            "end": 1779013273159
+          },
+          "id": "prt_e35744251001cWXvbHe8k0Glb7",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35743c17001E0Nxh4JNXuq2fi"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_8a5c14959b664ebab90b90ee",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/rpc/router/index.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/rpc/router/index.ts</path>\n<type>file</type>\n<content>\n1: import * as admin from \"./admin\";\n2: import {\n3:   clientArchive,\n4:   clientCreate,\n5:   clientGetById,\n6:   clientGetUploadUrl,\n7:   clientList,\n8:   clientListEvents,\n9:   clientUpdate,\n10: } from \"./client\";\n11: import {\n12:   notificationList,\n13:   notificationMarkAllRead,\n14:   notificationMarkRead,\n15: } from \"./notification\";\n16: import { reminderArchive, reminderCreate, reminderList } from \"./reminder\";\n17: import {\n18:   taskAddLink,\n19:   taskArchive,\n20:   taskCreate,\n21:   taskGetById,\n22:   taskList,\n23:   taskListEvents,\n24:   taskRemoveLink,\n25:   taskStats,\n26:   taskUpdate,\n27: } from \"./task\";\n28: \n29: export default {\n30:   admin,\n31:   client: {\n32:     archive: clientArchive,\n33:     create: clientCreate,\n34:     getById: clientGetById,\n35:     getUploadUrl: clientGetUploadUrl,\n36:     list: clientList,\n37:     listEvents: clientListEvents,\n38:     update: clientUpdate,\n39:   },\n40:   notification: {\n41:     list: notificationList,\n42:     markAllRead: notificationMarkAllRead,\n43:     markRead: notificationMarkRead,\n44:   },\n45:   reminder: {\n46:     archive: reminderArchive,\n47:     create: reminderCreate,\n48:     list: reminderList,\n49:   },\n50:   task: {\n51:     addLink: taskAddLink,\n52:     archive: taskArchive,\n53:     create: taskCreate,\n54:     getById: taskGetById,\n55:     list: taskList,\n56:     listEvents: taskListEvents,\n57:     removeLink: taskRemoveLink,\n58:     stats: taskStats,\n59:     update: taskUpdate,\n60:   },\n61: };\n\n(End of file - total 61 lines)\n</content>",
+            "metadata": {
+              "preview": "import * as admin from \"./admin\";\nimport {\n  clientArchive,\n  clientCreate,\n  clientGetById,\n  clientGetUploadUrl,\n  clientList,\n  clientListEvents,\n  clientUpdate,\n} from \"./client\";\nimport {\n  notificationList,\n  notificationMarkAllRead,\n  notificationMarkRead,\n} from \"./notification\";\nimport { reminderArchive, reminderCreate, reminderList } from \"./reminder\";\nimport {\n  taskAddLink,\n  taskArchive,\n  taskCreate,",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/rpc/router/index.ts",
+            "time": {
+              "start": 1779013272376,
+              "end": 1779013272395
+            }
+          },
+          "id": "prt_e357442ca001EEqChEJ49vJgxP",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35743c17001E0Nxh4JNXuq2fi"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_fe557a66e501422a9c5a71fe",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/rpc/client.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/rpc/client.ts</path>\n<type>file</type>\n<content>\n1: import { createORPCClient } from \"@orpc/client\";\n2: import { RPCLink } from \"@orpc/client/fetch\";\n3: import type { RouterClient } from \"@orpc/server\";\n4: import { createRouterClient } from \"@orpc/server\";\n5: import { createTanstackQueryUtils } from \"@orpc/tanstack-query\";\n6: import { createIsomorphicFn } from \"@tanstack/react-start\";\n7: import { getRequestHeaders } from \"@tanstack/react-start/server\";\n8: \n9: import router from \"@/rpc/router\";\n10: \n11: const getORPCClient = createIsomorphicFn()\n12:   .server(() =>\n13:     createRouterClient(router, {\n14:       context: () => ({\n15:         headers: getRequestHeaders(),\n16:       }),\n17:     }),\n18:   )\n19:   .client((): RouterClient<typeof router> => {\n20:     const link = new RPCLink({\n21:       url: `${window.location.origin}/api/rpc`,\n22:     });\n23:     return createORPCClient(link);\n24:   });\n25: \n26: export const client: RouterClient<typeof router> = getORPCClient();\n27: \n28: export const rpc = createTanstackQueryUtils(client);\n\n(End of file - total 28 lines)\n</content>",
+            "metadata": {
+              "preview": "import { createORPCClient } from \"@orpc/client\";\nimport { RPCLink } from \"@orpc/client/fetch\";\nimport type { RouterClient } from \"@orpc/server\";\nimport { createRouterClient } from \"@orpc/server\";\nimport { createTanstackQueryUtils } from \"@orpc/tanstack-query\";\nimport { createIsomorphicFn } from \"@tanstack/react-start\";\nimport { getRequestHeaders } from \"@tanstack/react-start/server\";\n\nimport router from \"@/rpc/router\";\n\nconst getORPCClient = createIsomorphicFn()\n  .server(() =>\n    createRouterClient(router, {\n      context: () => ({\n        headers: getRequestHeaders(),\n      }),\n    }),\n  )\n  .client((): RouterClient<typeof router> => {\n    const link = new RPCLink({",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/rpc/client.ts",
+            "time": {
+              "start": 1779013272504,
+              "end": 1779013272521
+            }
+          },
+          "id": "prt_e3574434f001ldBmxLuXo47kj5",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35743c17001E0Nxh4JNXuq2fi"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_bd1d30f16b034b02b5d1ea33",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/rpc/middleware.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/rpc/middleware.ts</path>\n<type>file</type>\n<content>\n1: import { ORPCError } from \"@orpc/server\";\n2: \n3: import type { Action, Resource } from \"@/lib/auth/access-control\";\n4: import { auth } from \"@/lib/auth/server\";\n5: import type { SubordinateCache } from \"@/services/supervisor-hierarchy-service\";\n6: \n7: import { type AuthContext, base } from \"./context\";\n8: \n9: type PermissionMeta = {\n10:   permission?: { resource: Resource; action: Action };\n11: };\n12: \n13: const baseWithMeta = base.$meta<PermissionMeta>({});\n14: \n15: export const authMiddleware = baseWithMeta.middleware(\n16:   async ({ context, next }) => {\n17:     const sessionData = await auth.api.getSession({\n18:       headers: context.headers || {},\n19:     });\n20: \n21:     if (!sessionData?.session || !sessionData?.user) {\n22:       throw new ORPCError(\"UNAUTHORIZED\", {\n23:         message: \"You must be signed in\",\n24:       });\n25:     }\n26: \n27:     const { session, user } = sessionData;\n28:     const subordinateCache: SubordinateCache = new Map();\n29:     return next({\n30:       context: { session, subordinateCache, user } satisfies AuthContext,\n31:     });\n32:   },\n33: );\n34: \n35: export const protectedProcedure = baseWithMeta\n36:   .use(authMiddleware)\n37:   .use(async ({ context, next, procedure }) => {\n38:     const required = procedure[\"~orpc\"].meta.permission;\n39:     if (!required) return next();\n40:     if (\n41:       context.user.permissions.includes(\n42:         `${required.resource}:${required.action}`,\n43:       )\n44:     ) {\n45:       return next();\n46:     }\n47: \n48:     throw new ORPCError(\"FORBIDDEN\", {\n49:       data: { requiredPermission: required },\n50:       message: `Missing permission: ${required.resource}:${required.action}`,\n51:     });\n52:   });\n\n(End of file - total 52 lines)\n</content>",
+            "metadata": {
+              "preview": "import { ORPCError } from \"@orpc/server\";\n\nimport type { Action, Resource } from \"@/lib/auth/access-control\";\nimport { auth } from \"@/lib/auth/server\";\nimport type { SubordinateCache } from \"@/services/supervisor-hierarchy-service\";\n\nimport { type AuthContext, base } from \"./context\";\n\ntype PermissionMeta = {\n  permission?: { resource: Resource; action: Action };\n};\n\nconst baseWithMeta = base.$meta<PermissionMeta>({});\n\nexport const authMiddleware = baseWithMeta.middleware(\n  async ({ context, next }) => {\n    const sessionData = await auth.api.getSession({\n      headers: context.headers || {},\n    });\n",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/rpc/middleware.ts",
+            "time": {
+              "start": 1779013272715,
+              "end": 1779013272736
+            }
+          },
+          "id": "prt_e357443d30010rb2MTGXPsjtga",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35743c17001E0Nxh4JNXuq2fi"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_d8416026a4194cceb1a7a193",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/rpc/context.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/rpc/context.ts</path>\n<type>file</type>\n<content>\n1: import { os } from \"@orpc/server\";\n2: \n3: import type { auth } from \"@/lib/auth/server\";\n4: import type { SubordinateCache } from \"@/services/supervisor-hierarchy-service\";\n5: \n6: export type AuthContext = {\n7:   session: typeof auth.$Infer.Session.session;\n8:   subordinateCache: SubordinateCache;\n9:   user: typeof auth.$Infer.Session.user;\n10: };\n11: \n12: export const base = os.$context<{\n13:   headers: HeadersInit | undefined;\n14: }>();\n\n(End of file - total 14 lines)\n</content>",
+            "metadata": {
+              "preview": "import { os } from \"@orpc/server\";\n\nimport type { auth } from \"@/lib/auth/server\";\nimport type { SubordinateCache } from \"@/services/supervisor-hierarchy-service\";\n\nexport type AuthContext = {\n  session: typeof auth.$Infer.Session.session;\n  subordinateCache: SubordinateCache;\n  user: typeof auth.$Infer.Session.user;\n};\n\nexport const base = os.$context<{\n  headers: HeadersInit | undefined;\n}>();",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/rpc/context.ts",
+            "time": {
+              "start": 1779013272928,
+              "end": 1779013272938
+            }
+          },
+          "id": "prt_e3574448f001TUIuBaGkS7DOaL",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35743c17001E0Nxh4JNXuq2fi"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_a6ca1e4565474cc19af68d3a",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/lib/auth/access-control.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/lib/auth/access-control.ts</path>\n<type>file</type>\n<content>\n1: import { createAccessControl } from \"better-auth/plugins/access\";\n2: \n3: import { ROLE_DISPLAY_NAMES } from \"../constants\";\n4: \n5: export const ac = createAccessControl({\n6:   client_contracts: [\"create\", \"read\", \"update\", \"archive\"],\n7:   clients: [\"create\", \"read\", \"update\", \"archive\"],\n8:   job_mandates: [\n9:     \"create\",\n10:     \"read\",\n11:     \"update\",\n12:     \"archive\",\n13:     \"assign\",\n14:     \"link_prospect\",\n15:     \"verify\",\n16:   ],\n17:   notification: [\"read\", \"update\", \"archive\"],\n18:   prospects: [\"create\", \"read\", \"update\", \"archive\"],\n19:   reminders: [\"create\", \"read\", \"archive\"],\n20:   tasks: [\"create\", \"read\", \"update\", \"archive\", \"assign\"],\n21:   team_members: [\"create\", \"read\", \"update\", \"archive\", \"manage-roles\"],\n22: });\n23: \n24: export const roles = {\n25:   admin: ac.newRole({\n26:     client_contracts: [\"create\", \"read\", \"update\", \"archive\"],\n27:     clients: [\"create\", \"read\", \"update\", \"archive\"],\n28:     job_mandates: [\n29:       \"create\",\n30:       \"read\",\n31:       \"update\",\n32:       \"archive\",\n33:       \"assign\",\n34:       \"link_prospect\",\n35:       \"verify\",\n36:     ],\n37:     notification: [\"read\", \"update\", \"archive\"],\n38:     prospects: [\"create\", \"read\", \"update\", \"archive\"],\n39:     reminders: [\"create\", \"read\", \"archive\"],\n40:     tasks: [\"create\", \"read\", \"update\", \"archive\", \"assign\"],\n41:     team_members: [\"create\", \"read\", \"update\", \"archive\", \"manage-roles\"],\n42:   }),\n43:   bd: ac.newRole({\n44:     client_contracts: [\"create\", \"read\", \"update\", \"archive\"],\n45:     clients: [\"create\", \"read\", \"update\", \"archive\"],\n46:     job_mandates: [\"create\", \"read\", \"update\", \"archive\", \"assign\"],\n47:     notification: [\"read\", \"update\", \"archive\"],\n48:     prospects: [\"create\", \"read\"],\n49:     reminders: [\"create\", \"read\", \"archive\"],\n50:     tasks: [\"create\", \"read\", \"update\", \"archive\", \"assign\"],\n51:     team_members: [\"read\"],\n52:   }),\n53:   caller: ac.newRole({\n54:     job_mandates: [\"read\"],\n55:     notification: [\"read\", \"update\", \"archive\"],\n56:     prospects: [\"create\", \"read\", \"update\"],\n57:     reminders: [\"create\", \"read\", \"archive\"],\n58:     tasks: [\"create\", \"read\", \"update\", \"archive\", \"assign\"],\n59:     team_members: [\"read\"],\n60:   }),\n61:   qc: ac.newRole({\n62:     job_mandates: [\"read\", \"verify\"],\n63:     notification: [\"read\", \"update\", \"archive\"],\n64:     prospects: [\"read\"],\n65:     reminders: [\"create\", \"read\", \"archive\"],\n66:     tasks: [\"create\", \"read\", \"update\", \"archive\", \"assign\"],\n67:     team_members: [\"read\"],\n68:   }),\n69:   rm: ac.newRole({\n70:     client_contracts: [\"read\"],\n71:     clients: [\"read\"],\n72:     job_mandates: [\"read\", \"assign\"],\n73:     notification: [\"read\", \"update\", \"archive\"],\n74:     prospects: [\"create\", \"read\"],\n75:     reminders: [\"create\", \"read\", \"archive\"],\n76:     tasks: [\"create\", \"read\", \"update\", \"archive\", \"assign\"],\n77:     team_members: [\"read\"],\n78:   }),\n79:   sc: ac.newRole({\n80:     job_mandates: [\"read\", \"link_prospect\"],\n81:     notification: [\"read\", \"update\", \"archive\"],\n82:     prospects: [\"create\", \"read\", \"update\", \"archive\"],\n83:     reminders: [\"create\", \"read\", \"archive\"],\n84:     tasks: [\"create\", \"read\", \"update\", \"archive\", \"assign\"],\n85:     team_members: [\"read\"],\n86:   }),\n87:   tl: ac.newRole({\n88:     job_mandates: [\"read\", \"assign\", \"link_prospect\"],\n89:     notification: [\"read\", \"update\", \"archive\"],\n90:     prospects: [\"create\", \"read\"],\n91:     reminders: [\"create\", \"read\", \"archive\"],\n92:     tasks: [\"create\", \"read\", \"update\", \"archive\", \"assign\"],\n93:     team_members: [\"read\"],\n94:   }),\n95: } as const;\n96: \n97: export type RoleCode = keyof typeof roles | \"custom\";\n98: export type Statement = typeof ac.statements;\n99: export type Resource = keyof Statement;\n100: export type Action<S extends Resource = Resource> = Statement[S][number];\n101: export type PermissionSet = Record<string, string[]>;\n102: export type ResolvedPermissions = string[];\n103: \n104: export function resolvePermissions({\n105:   role,\n106:   permissions,\n107: }: {\n108:   role: RoleCode;\n109:   permissions?: PermissionSet | null;\n110: }): ResolvedPermissions {\n111:   if (role === \"custom\") {\n112:     if (!permissions) return [];\n113:     return Object.entries(permissions).flatMap(([domain, actions]) =>\n114:       actions.map((access) => `${domain}:${access}`),\n115:     );\n116:   }\n117: \n118:   if (!(role in roles)) return [];\n119:   const roleDef = roles[role];\n120:   if (!roleDef) return [];\n121: \n122:   return Object.entries(roleDef.statements).flatMap(([domain, actions]) =>\n123:     actions.map((access) => `${domain}:${access}`),\n124:   );\n125: }\n126: \n127: export function listPredefinedRoles() {\n128:   const result: {\n129:     code: RoleCode;\n130:     displayName: string;\n131:     permissions: PermissionSet;\n132:   }[] = [];\n133: \n134:   for (const [code, roleDef] of Object.entries(roles)) {\n135:     const permissions: PermissionSet = {};\n136:     for (const resource of Object.keys(ac.statements) as Resource[]) {\n137:       const allowed = (roleDef as unknown as Record<string, string[]>)[\n138:         resource\n139:       ];\n140:       if (allowed && allowed.length > 0) {\n141:         permissions[resource] = allowed;\n142:       }\n143:     }\n144:     result.push({\n145:       code: code as RoleCode,\n146:       displayName: ROLE_DISPLAY_NAMES[code as RoleCode],\n147:       permissions,\n148:     });\n149:   }\n150: \n151:   result.push({\n152:     code: \"custom\",\n153:     displayName: ROLE_DISPLAY_NAMES.custom,\n154:     permissions: {},\n155:   });\n156: \n157:   return result;\n158: }\n\n(End of file - total 158 lines)\n</content>",
+            "metadata": {
+              "preview": "import { createAccessControl } from \"better-auth/plugins/access\";\n\nimport { ROLE_DISPLAY_NAMES } from \"../constants\";\n\nexport const ac = createAccessControl({\n  client_contracts: [\"create\", \"read\", \"update\", \"archive\"],\n  clients: [\"create\", \"read\", \"update\", \"archive\"],\n  job_mandates: [\n    \"create\",\n    \"read\",\n    \"update\",\n    \"archive\",\n    \"assign\",\n    \"link_prospect\",\n    \"verify\",\n  ],\n  notification: [\"read\", \"update\", \"archive\"],\n  prospects: [\"create\", \"read\", \"update\", \"archive\"],\n  reminders: [\"create\", \"read\", \"archive\"],\n  tasks: [\"create\", \"read\", \"update\", \"archive\", \"assign\"],",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/lib/auth/access-control.ts",
+            "time": {
+              "start": 1779013273055,
+              "end": 1779013273075
+            }
+          },
+          "id": "prt_e3574456e001IlFqi60mbnPDxG",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35743c17001E0Nxh4JNXuq2fi"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_4086a1341d904f4ab2d26a9b",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/lib/auth/server.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/lib/auth/server.ts</path>\n<type>file</type>\n<content>\n1: import { drizzleAdapter } from \"@better-auth/drizzle-adapter\";\n2: import { type BetterAuthOptions, betterAuth } from \"better-auth\";\n3: import { APIError } from \"better-auth/api\";\n4: import { admin, customSession, phoneNumber } from \"better-auth/plugins\";\n5: import { tanstackStartCookies } from \"better-auth/tanstack-start\";\n6: import { eq } from \"drizzle-orm\";\n7: \n8: import {\n9:   ac,\n10:   type RoleCode,\n11:   resolvePermissions,\n12:   roles,\n13: } from \"@/lib/auth/access-control\";\n14: import { db } from \"@/lib/db/server\";\n15: import * as schema from \"@/schema\";\n16: \n17: const options = {\n18:   database: drizzleAdapter(db, {\n19:     provider: \"pg\",\n20:     schema,\n21:   }),\n22:   databaseHooks: {\n23:     user: {\n24:       create: {\n25:         before: async (_user, ctx) => {\n26:           const path = ctx?.path ?? \"\";\n27:           if (path === \"/admin/create-user\") return;\n28:           throw new APIError(\"BAD_REQUEST\", {\n29:             message: \"Signups are disabled\",\n30:           });\n31:         },\n32:       },\n33:     },\n34:   },\n35:   emailAndPassword: {\n36:     enabled: false,\n37:   },\n38:   plugins: [\n39:     phoneNumber({\n40:       sendOTP: async ({ phoneNumber: phone, code }) => {\n41:         const [existingUser] = await db\n42:           .select()\n43:           .from(schema.user)\n44:           .where(eq(schema.user.phoneNumber, phone));\n45: \n46:         if (!existingUser) {\n47:           throw new APIError(\"BAD_REQUEST\", { message: \"No account found\" });\n48:         }\n49:         if (existingUser.banned) {\n50:           throw new APIError(\"FORBIDDEN\", { message: \"Account is suspended\" });\n51:         }\n52:         console.log(`[OTP] Phone: ${phone} | Code: ${code}`);\n53:       },\n54:     }),\n55:     admin({ ac, roles }),\n56:     tanstackStartCookies(),\n57:   ],\n58:   session: {\n59:     expiresIn: 60 * 60 * 24 * 30,\n60:   },\n61:   user: {\n62:     additionalFields: {\n63:       permissions: {\n64:         defaultValue: null,\n65:         input: false,\n66:         required: false,\n67:         type: \"json\",\n68:       },\n69:       supervisorId: {\n70:         defaultValue: null,\n71:         input: false,\n72:         required: false,\n73:         type: \"string\",\n74:       },\n75:     },\n76:   },\n77: } satisfies BetterAuthOptions;\n78: \n79: export const auth = betterAuth({\n80:   ...options,\n81:   plugins: [\n82:     customSession(async ({ user, session }) => {\n83:       const role = (user.role ?? \"custom\") as RoleCode;\n84:       const permissions = resolvePermissions({\n85:         permissions: user.permissions,\n86:         role,\n87:       });\n88:       return { session, user: { ...user, permissions, role } };\n89:     }, options),\n90:     ...(options.plugins ?? []),\n91:   ],\n92: });\n\n(End of file - total 92 lines)\n</content>",
+            "metadata": {
+              "preview": "import { drizzleAdapter } from \"@better-auth/drizzle-adapter\";\nimport { type BetterAuthOptions, betterAuth } from \"better-auth\";\nimport { APIError } from \"better-auth/api\";\nimport { admin, customSession, phoneNumber } from \"better-auth/plugins\";\nimport { tanstackStartCookies } from \"better-auth/tanstack-start\";\nimport { eq } from \"drizzle-orm\";\n\nimport {\n  ac,\n  type RoleCode,\n  resolvePermissions,\n  roles,\n} from \"@/lib/auth/access-control\";\nimport { db } from \"@/lib/db/server\";\nimport * as schema from \"@/schema\";\n\nconst options = {\n  database: drizzleAdapter(db, {\n    provider: \"pg\",\n    schema,",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/lib/auth/server.ts",
+            "time": {
+              "start": 1779013273199,
+              "end": 1779013273221
+            }
+          },
+          "id": "prt_e35744600001U4p55wGYZiKP3k",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35743c17001E0Nxh4JNXuq2fi"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "a77bbadd8c7afd42872a7cb9ffeb7fea650952ce",
+          "type": "step-finish",
+          "tokens": {
+            "total": 6794,
+            "input": 5595,
+            "output": 210,
+            "reasoning": 29,
+            "cache": {
+              "write": 0,
+              "read": 960
+            }
+          },
+          "cost": 0,
+          "id": "prt_e357446800011ipSZlqq4uPHc5",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35743c17001E0Nxh4JNXuq2fi"
+        },
+        {
+          "type": "tool",
+          "tool": "glob",
+          "callID": "call_4db50be837fc4f30be15bb0f",
+          "state": {
+            "status": "completed",
+            "input": {
+              "pattern": "src/rpc/router/**/*.ts"
+            },
+            "output": "/home/aditya/projects/alpauls-ats/src/rpc/router/client.ts\n/home/aditya/projects/alpauls-ats/src/rpc/router/index.ts\n/home/aditya/projects/alpauls-ats/src/rpc/router/admin.ts\n/home/aditya/projects/alpauls-ats/src/rpc/router/prospect.ts\n/home/aditya/projects/alpauls-ats/src/rpc/router/client-contract.ts\n/home/aditya/projects/alpauls-ats/src/rpc/router/task.ts\n/home/aditya/projects/alpauls-ats/src/rpc/router/reminder.ts\n/home/aditya/projects/alpauls-ats/src/rpc/router/notification.ts",
+            "metadata": {
+              "count": 8,
+              "truncated": false
+            },
+            "title": "",
+            "time": {
+              "start": 1779013273287,
+              "end": 1779013273323
+            }
+          },
+          "id": "prt_e35744680001zFdi0GBjywWBKb",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35743c17001E0Nxh4JNXuq2fi"
+        },
+        {
+          "type": "tool",
+          "tool": "glob",
+          "callID": "call_594a11ec8b1548ca96fec33d",
+          "state": {
+            "status": "completed",
+            "input": {
+              "pattern": "src/schema/**/*.ts"
+            },
+            "output": "/home/aditya/projects/alpauls-ats/src/schema/forms/client-contract.ts\n/home/aditya/projects/alpauls-ats/src/schema/.utils.ts\n/home/aditya/projects/alpauls-ats/src/schema/auth-form.ts\n/home/aditya/projects/alpauls-ats/src/schema/client-contract.ts\n/home/aditya/projects/alpauls-ats/src/schema/client.ts\n/home/aditya/projects/alpauls-ats/src/schema/client-form.ts\n/home/aditya/projects/alpauls-ats/src/schema/index.ts\n/home/aditya/projects/alpauls-ats/src/schema/job-mandate.ts\n/home/aditya/projects/alpauls-ats/src/schema/auth.ts\n/home/aditya/projects/alpauls-ats/src/schema/prospect.ts\n/home/aditya/projects/alpauls-ats/src/schema/task.ts\n/home/aditya/projects/alpauls-ats/src/schema/reminder.ts\n/home/aditya/projects/alpauls-ats/src/schema/notification.ts\n/home/aditya/projects/alpauls-ats/src/schema/prospect-mandate.ts",
+            "metadata": {
+              "count": 14,
+              "truncated": false
+            },
+            "title": "",
+            "time": {
+              "start": 1779013273385,
+              "end": 1779013273422
+            }
+          },
+          "id": "prt_e357446db001Czil1vjisqNE5N",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35743c17001E0Nxh4JNXuq2fi"
+        },
+        {
+          "type": "tool",
+          "tool": "glob",
+          "callID": "call_92b0ef38f3714608ac59a599",
+          "state": {
+            "status": "completed",
+            "input": {
+              "pattern": "src/services/**/*.ts"
+            },
+            "output": "/home/aditya/projects/alpauls-ats/src/services/task-event-service.ts\n/home/aditya/projects/alpauls-ats/src/services/prospect-event-service.ts\n/home/aditya/projects/alpauls-ats/src/services/task-service.ts\n/home/aditya/projects/alpauls-ats/src/services/supervisor-hierarchy-service.ts\n/home/aditya/projects/alpauls-ats/src/services/prospect-service.ts\n/home/aditya/projects/alpauls-ats/src/services/client-contract-service.ts\n/home/aditya/projects/alpauls-ats/src/services/client-event-service.ts\n/home/aditya/projects/alpauls-ats/src/services/client-service.ts\n/home/aditya/projects/alpauls-ats/src/services/__tests__/supervisor-hierarchy-service.test.ts\n/home/aditya/projects/alpauls-ats/src/services/__tests__/client-contract-service.test.ts\n/home/aditya/projects/alpauls-ats/src/services/task-link-service.ts\n/home/aditya/projects/alpauls-ats/src/services/reminder-service.ts\n/home/aditya/projects/alpauls-ats/src/services/notification-service.ts\n/home/aditya/projects/alpauls-ats/src/services/__tests__/reminder-service.test.ts\n/home/aditya/projects/alpauls-ats/src/services/__tests__/task-event-service.test.ts\n/home/aditya/projects/alpauls-ats/src/services/__tests__/task-link-service.test.ts\n/home/aditya/projects/alpauls-ats/src/services/__tests__/task-service.test.ts",
+            "metadata": {
+              "count": 17,
+              "truncated": false
+            },
+            "title": "",
+            "time": {
+              "start": 1779013273155,
+              "end": 1779013273173
+            }
+          },
+          "id": "prt_e3574473c001s1UiIiXNmQBp7b",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35743c17001E0Nxh4JNXuq2fi"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_e35743a43001j6xMtSmJ7PWp4w",
+        "role": "assistant",
+        "mode": "explore",
+        "agent": "explore",
+        "path": {
+          "cwd": "/home/aditya/projects/alpauls-ats",
+          "root": "/home/aditya/projects/alpauls-ats"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 11816,
+          "input": 4647,
+          "output": 266,
+          "reasoning": 119,
+          "cache": {
+            "write": 0,
+            "read": 6784
+          }
+        },
+        "modelID": "GLM-5.1",
+        "providerID": "wafer.ai",
+        "time": {
+          "created": 1779013273244,
+          "completed": 1779013278888
+        },
+        "finish": "tool-calls",
+        "id": "msg_e3574469c001KrJGYULjchF55Y",
+        "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh"
+      },
+      "parts": [
+        {
+          "snapshot": "a77bbadd8c7afd42872a7cb9ffeb7fea650952ce",
+          "type": "step-start",
+          "id": "prt_e35744c130016J9XTANu1XQ4mb",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e3574469c001KrJGYULjchF55Y"
+        },
+        {
+          "type": "reasoning",
+          "text": "Good, I have the main files. Now I need to:\n1. Read the client.ts RPC router file (it has a list endpoint)\n2. Read the auth.ts schema (user table)\n3. Read the schema/index.ts to see how schemas are organized\n4. Check if there's a users.ts in the RPC router (it's NOT in the glob results, so it doesn't exist)\n5. Check if there's any user service in services/ (NOT in the glob results)\n\nLet me also read the existing list endpoint implementations as examples, and the auth schema.",
+          "time": {
+            "start": 1779013274645,
+            "end": 1779013275659
+          },
+          "id": "prt_e35744c15001AbKj3ByF7e9BrR",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e3574469c001KrJGYULjchF55Y"
+        },
+        {
+          "type": "text",
+          "text": "Now let me read the RPC router files with list endpoints, the auth/user schema, and the schema index:",
+          "time": {
+            "start": 1779013275661,
+            "end": 1779013278521
+          },
+          "id": "prt_e3574500d001aGK13UVEiImWhd",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e3574469c001KrJGYULjchF55Y"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_4768f0a24be54e05aafdce27",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/rpc/router/client.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/rpc/router/client.ts</path>\n<type>file</type>\n<content>\n1: import { getPresignedUploadUrl, getR2PublicUrl } from \"@/lib/r2\";\n2: import { protectedProcedure } from \"@/rpc/middleware\";\n3: import {\n4:   archiveClientSchema,\n5:   createClientSchema,\n6:   getClientByIdSchema,\n7:   getUploadUrlSchema,\n8:   listClientEventsSchema,\n9:   listClientsSchema,\n10:   updateClientSchema,\n11: } from \"@/rpc/schema/client\";\n12: import { listClientEvents } from \"@/services/client-event-service\";\n13: import {\n14:   archiveClient as archiveClientService,\n15:   createClient,\n16:   getClient,\n17:   listClients,\n18:   updateClient,\n19: } from \"@/services/client-service\";\n20: \n21: export const clientCreate = protectedProcedure\n22:   .meta({ permission: { action: \"create\", resource: \"clients\" } })\n23:   .input(createClientSchema)\n24:   .handler(async ({ input, context }) => {\n25:     const client = await createClient({\n26:       ...input,\n27:       createdBy: context.user.id,\n28:     });\n29:     return client;\n30:   });\n31: \n32: export const clientUpdate = protectedProcedure\n33:   .meta({ permission: { action: \"update\", resource: \"clients\" } })\n34:   .input(updateClientSchema)\n35:   .handler(async ({ input, context }) => {\n36:     const { id, ...updates } = input;\n37:     const userId = context.user.id;\n38:     const client = await updateClient(id, updates, userId);\n39:     return client;\n40:   });\n41: \n42: export const clientArchive = protectedProcedure\n43:   .meta({ permission: { action: \"archive\", resource: \"clients\" } })\n44:   .input(archiveClientSchema)\n45:   .handler(async ({ input, context }) => {\n46:     const userId = context.user.id;\n47:     const client = await archiveClientService(input.id, userId);\n48:     return client;\n49:   });\n50: \n51: export const clientGetById = protectedProcedure\n52:   .meta({ permission: { action: \"read\", resource: \"clients\" } })\n53:   .input(getClientByIdSchema)\n54:   .handler(async ({ input }) => {\n55:     const client = await getClient(input.id);\n56:     if (!client) throw new Error(\"Client not found\");\n57:     return client;\n58:   });\n59: \n60: export const clientList = protectedProcedure\n61:   .meta({ permission: { action: \"read\", resource: \"clients\" } })\n62:   .input(listClientsSchema)\n63:   .handler(async ({ input, context }) => {\n64:     const result = await listClients({\n65:       cursor: input.cursor,\n66:       filters: {\n67:         archived: input.archived,\n68:         assigneeId: input.assigneeId,\n69:         search: input.search,\n70:       },\n71:       limit: input.limit,\n72:       sortBy: input.sortBy,\n73:       sortOrder: input.sortOrder,\n74:       subordinateCache: context.subordinateCache,\n75:       userId: context.user.id,\n76:     });\n77:     return result;\n78:   });\n79: \n80: export const clientListEvents = protectedProcedure\n81:   .meta({ permission: { action: \"read\", resource: \"clients\" } })\n82:   .input(listClientEventsSchema)\n83:   .handler(async ({ input }) => {\n84:     return listClientEvents(input.clientId, input.cursor, input.limit ?? 50);\n85:   });\n86: \n87: export const clientGetUploadUrl = protectedProcedure\n88:   .meta({ permission: { action: \"create\", resource: \"clients\" } })\n89:   .input(getUploadUrlSchema)\n90:   .handler(async ({ input }) => {\n91:     const key = `clients/${crypto.randomUUID()}/${input.filename}`;\n92:     const url = await getPresignedUploadUrl(key, input.contentType);\n93:     return { key, publicUrl: getR2PublicUrl(key), url };\n94:   });\n\n(End of file - total 94 lines)\n</content>",
+            "metadata": {
+              "preview": "import { getPresignedUploadUrl, getR2PublicUrl } from \"@/lib/r2\";\nimport { protectedProcedure } from \"@/rpc/middleware\";\nimport {\n  archiveClientSchema,\n  createClientSchema,\n  getClientByIdSchema,\n  getUploadUrlSchema,\n  listClientEventsSchema,\n  listClientsSchema,\n  updateClientSchema,\n} from \"@/rpc/schema/client\";\nimport { listClientEvents } from \"@/services/client-event-service\";\nimport {\n  archiveClient as archiveClientService,\n  createClient,\n  getClient,\n  listClients,\n  updateClient,\n} from \"@/services/client-service\";\n",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/rpc/router/client.ts",
+            "time": {
+              "start": 1779013276337,
+              "end": 1779013276349
+            }
+          },
+          "id": "prt_e357452ac001Jv5na5Yt4iuN15",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e3574469c001KrJGYULjchF55Y"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_0060e2e5cfa0427eada82954",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/rpc/router/admin.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/rpc/router/admin.ts</path>\n<type>file</type>\n<content>\n1: import { ORPCError } from \"@orpc/server\";\n2: import { hashPassword } from \"better-auth/crypto\";\n3: import { and, eq } from \"drizzle-orm\";\n4: import { alias } from \"drizzle-orm/pg-core\";\n5: \n6: import { listPredefinedRoles } from \"@/lib/auth/access-control\";\n7: import { db } from \"@/lib/db/server\";\n8: import { protectedProcedure } from \"@/rpc/middleware\";\n9: import {\n10:   archiveUserSchema,\n11:   createUserSchema,\n12:   resetPasswordSchema,\n13:   updateUserSchema,\n14: } from \"@/rpc/schema/admin\";\n15: import { account, session, user } from \"@/schema\";\n16: import { validateNoCircularSupervisor } from \"@/services/supervisor-hierarchy-service\";\n17: \n18: export const createUser = protectedProcedure\n19:   .meta({\n20:     permission: {\n21:       action: \"manage-roles\" as const,\n22:       resource: \"team_members\" as const,\n23:     },\n24:   })\n25:   .input(createUserSchema)\n26:   .handler(async ({ context, input }) => {\n27:     if (input.role === \"custom\") {\n28:       if (!input.permissions || Object.keys(input.permissions).length === 0) {\n29:         throw new ORPCError(\"BAD_REQUEST\", {\n30:           message: \"permissions must be non-empty when role is 'custom'\",\n31:         });\n32:       }\n33:     }\n34: \n35:     if (input.role !== \"admin\" && !input.supervisorId) {\n36:       throw new ORPCError(\"BAD_REQUEST\", {\n37:         message: \"Non-admin users must have a supervisor\",\n38:       });\n39:     }\n40: \n41:     if (input.role === \"admin\") {\n42:       input.supervisorId = undefined;\n43:     }\n44: \n45:     const normalizedEmail = input.email.toLowerCase();\n46: \n47:     const [existing] = await db\n48:       .select({ id: user.id })\n49:       .from(user)\n50:       .where(eq(user.email, normalizedEmail));\n51: \n52:     if (existing) {\n53:       throw new ORPCError(\"CONFLICT\", {\n54:         message: \"A user with this email already exists\",\n55:       });\n56:     }\n57: \n58:     const id = crypto.randomUUID();\n59: \n60:     if (input.supervisorId) {\n61:       const [supervisor] = await db\n62:         .select({ id: user.id })\n63:         .from(user)\n64:         .where(eq(user.id, input.supervisorId));\n65: \n66:       if (!supervisor) {\n67:         throw new ORPCError(\"BAD_REQUEST\", {\n68:           message: \"Supervisor not found\",\n69:         });\n70:       }\n71: \n72:       await validateNoCircularSupervisor(\n73:         id,\n74:         input.supervisorId,\n75:         context.subordinateCache,\n76:       );\n77:     }\n78: \n79:     await db.insert(user).values({\n80:       email: normalizedEmail,\n81:       id,\n82:       name: input.name,\n83:       permissions: input.role === \"custom\" ? input.permissions : null,\n84:       role: input.role,\n85:       supervisorId: input.supervisorId ?? null,\n86:     });\n87: \n88:     const hashedPassword = await hashPassword(input.password);\n89:     await db.insert(account).values({\n90:       accountId: id,\n91:       id: crypto.randomUUID(),\n92:       password: hashedPassword,\n93:       providerId: \"credential\",\n94:       userId: id,\n95:     });\n96: \n97:     return { id };\n98:   });\n99: \n100: export const updateUser = protectedProcedure\n101:   .meta({\n102:     permission: {\n103:       action: \"manage-roles\" as const,\n104:       resource: \"team_members\" as const,\n105:     },\n106:   })\n107:   .input(updateUserSchema)\n108:   .handler(async ({ context, input }) => {\n109:     const {\n110:       userId,\n111:       role,\n112:       permissions,\n113:       banned,\n114:       banReason,\n115:       banExpires,\n116:       name,\n117:       email,\n118:       supervisorId,\n119:     } = input;\n120: \n121:     if (role === \"custom\") {\n122:       if (!permissions || Object.keys(permissions).length === 0) {\n123:         throw new ORPCError(\"BAD_REQUEST\", {\n124:           message: \"permissions must be non-empty when role is 'custom'\",\n125:         });\n126:       }\n127:     }\n128: \n129:     const [existing] = await db\n130:       .select({ role: user.role, supervisorId: user.supervisorId })\n131:       .from(user)\n132:       .where(eq(user.id, userId));\n133: \n134:     if (!existing) {\n135:       throw new ORPCError(\"NOT_FOUND\", { message: \"User not found\" });\n136:     }\n137: \n138:     const effectiveRole = role ?? existing.role;\n139:     const effectiveSupervisorId =\n140:       supervisorId !== undefined ? supervisorId : existing.supervisorId;\n141: \n142:     if (effectiveRole !== \"admin\" && !effectiveSupervisorId) {\n143:       throw new ORPCError(\"BAD_REQUEST\", {\n144:         message: \"Non-admin users must have a supervisor\",\n145:       });\n146:     }\n147: \n148:     if (supervisorId) {\n149:       const [supervisor] = await db\n150:         .select({ id: user.id })\n151:         .from(user)\n152:         .where(eq(user.id, supervisorId));\n153: \n154:       if (!supervisor) {\n155:         throw new ORPCError(\"BAD_REQUEST\", {\n156:           message: \"Supervisor not found\",\n157:         });\n158:       }\n159: \n160:       await validateNoCircularSupervisor(\n161:         userId,\n162:         supervisorId,\n163:         context.subordinateCache,\n164:       );\n165:     }\n166: \n167:     const updateData: Partial<typeof user.$inferInsert> = {};\n168: \n169:     if (role !== undefined) {\n170:       updateData.role = role;\n171:     }\n172: \n173:     if (banned === true) {\n174:       updateData.banned = true;\n175:       updateData.banReason = banReason ?? null;\n176:       updateData.banExpires = banExpires ?? null;\n177:     } else if (banned === false) {\n178:       updateData.banned = false;\n179:       updateData.banReason = null;\n180:       updateData.banExpires = null;\n181:     }\n182: \n183:     if (permissions !== undefined) {\n184:       updateData.permissions =\n185:         role === \"custom\" || (role === undefined && permissions)\n186:           ? permissions\n187:           : null;\n188:     }\n189:     if (name !== undefined) updateData.name = name;\n190:     if (email !== undefined) updateData.email = email;\n191: \n192:     if (supervisorId !== undefined) {\n193:       updateData.supervisorId = supervisorId;\n194:     }\n195: \n196:     if (Object.keys(updateData).length > 0) {\n197:       await db.update(user).set(updateData).where(eq(user.id, userId));\n198:     }\n199: \n200:     if (banned === true) {\n201:       await db.delete(session).where(eq(session.userId, userId));\n202:     }\n203: \n204:     if (role !== undefined || permissions !== undefined) {\n205:       await db.delete(session).where(eq(session.userId, userId));\n206:     }\n207: \n208:     return { success: true };\n209:   });\n210: \n211: export const listUsers = protectedProcedure\n212:   .meta({\n213:     permission: {\n214:       action: \"manage-roles\" as const,\n215:       resource: \"team_members\" as const,\n216:     },\n217:   })\n218:   .handler(async () => {\n219:     const supervisor = alias(user, \"supervisor\");\n220: \n221:     const users = await db\n222:       .select({\n223:         banExpires: user.banExpires,\n224:         banned: user.banned,\n225:         banReason: user.banReason,\n226:         createdAt: user.createdAt,\n227:         email: user.email,\n228:         id: user.id,\n229:         image: user.image,\n230:         name: user.name,\n231:         permissions: user.permissions,\n232:         phoneNumber: user.phoneNumber,\n233:         role: user.role,\n234:         supervisorId: user.supervisorId,\n235:         supervisorName: supervisor.name,\n236:       })\n237:       .from(user)\n238:       .leftJoin(supervisor, eq(user.supervisorId, supervisor.id));\n239: \n240:     return users;\n241:   });\n242: \n243: export const archiveUser = protectedProcedure\n244:   .meta({\n245:     permission: {\n246:       action: \"archive\" as const,\n247:       resource: \"team_members\" as const,\n248:     },\n249:   })\n250:   .input(archiveUserSchema)\n251:   .handler(async ({ input }) => {\n252:     await db\n253:       .update(user)\n254:       .set({ banned: true, banReason: \"Archived by admin\" })\n255:       .where(eq(user.id, input.userId));\n256:     return { success: true };\n257:   });\n258: \n259: export const listRoles = protectedProcedure\n260:   .meta({\n261:     permission: {\n262:       action: \"manage-roles\" as const,\n263:       resource: \"team_members\" as const,\n264:     },\n265:   })\n266:   .handler(async () => {\n267:     return listPredefinedRoles();\n268:   });\n269: \n270: export const resetPassword = protectedProcedure\n271:   .meta({\n272:     permission: {\n273:       action: \"manage-roles\" as const,\n274:       resource: \"team_members\" as const,\n275:     },\n276:   })\n277:   .input(resetPasswordSchema)\n278:   .handler(async ({ input }) => {\n279:     const hashedPassword = await hashPassword(input.newPassword);\n280:     await db\n281:       .update(account)\n282:       .set({ password: hashedPassword })\n283:       .where(\n284:         and(\n285:           eq(account.userId, input.userId),\n286:           eq(account.providerId, \"credential\"),\n287:         ),\n288:       );\n289:     return { success: true };\n290:   });\n\n(End of file - total 290 lines)\n</content>",
+            "metadata": {
+              "preview": "import { ORPCError } from \"@orpc/server\";\nimport { hashPassword } from \"better-auth/crypto\";\nimport { and, eq } from \"drizzle-orm\";\nimport { alias } from \"drizzle-orm/pg-core\";\n\nimport { listPredefinedRoles } from \"@/lib/auth/access-control\";\nimport { db } from \"@/lib/db/server\";\nimport { protectedProcedure } from \"@/rpc/middleware\";\nimport {\n  archiveUserSchema,\n  createUserSchema,\n  resetPasswordSchema,\n  updateUserSchema,\n} from \"@/rpc/schema/admin\";\nimport { account, session, user } from \"@/schema\";\nimport { validateNoCircularSupervisor } from \"@/services/supervisor-hierarchy-service\";\n\nexport const createUser = protectedProcedure\n  .meta({\n    permission: {",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/rpc/router/admin.ts",
+            "time": {
+              "start": 1779013276522,
+              "end": 1779013276539
+            }
+          },
+          "id": "prt_e357452b3001RBcQx2VDPfgO7b",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e3574469c001KrJGYULjchF55Y"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_f1dc787bf980423c83fdb9eb",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/rpc/router/task.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/rpc/router/task.ts</path>\n<type>file</type>\n<content>\n1: import { protectedProcedure } from \"@/rpc/middleware\";\n2: import {\n3:   addLinkSchema,\n4:   archiveTaskSchema,\n5:   createTaskSchema,\n6:   getTaskByIdSchema,\n7:   listEventsSchema,\n8:   listTasksSchema,\n9:   removeLinkSchema,\n10:   taskStatsSchema,\n11:   updateTaskSchema,\n12: } from \"@/rpc/schema/task\";\n13: import { listEvents } from \"@/services/task-event-service\";\n14: import { addLink, removeLink } from \"@/services/task-link-service\";\n15: import {\n16:   archiveTask as archiveTaskService,\n17:   createTask,\n18:   getTask,\n19:   getTaskStats,\n20:   listTasks,\n21:   updateTask,\n22: } from \"@/services/task-service\";\n23: \n24: export const taskCreate = protectedProcedure\n25:   .input(createTaskSchema)\n26:   .handler(async ({ input, context }) => {\n27:     const task = await createTask({\n28:       ...input,\n29:       createdBy: context.user.id,\n30:       status: input.status ?? \"todo\",\n31:     });\n32:     return task;\n33:   });\n34: \n35: export const taskUpdate = protectedProcedure\n36:   .input(updateTaskSchema)\n37:   .handler(async ({ input, context }) => {\n38:     const { id, ...updates } = input;\n39:     const userId = context.user.id;\n40:     const task = await updateTask(id, updates, userId);\n41:     return task;\n42:   });\n43: \n44: export const taskArchive = protectedProcedure\n45:   .input(archiveTaskSchema)\n46:   .handler(async ({ input, context }) => {\n47:     const userId = context.user.id;\n48:     const task = await archiveTaskService(input.id, userId);\n49:     return task;\n50:   });\n51: \n52: export const taskGetById = protectedProcedure\n53:   .input(getTaskByIdSchema)\n54:   .handler(async ({ input }) => {\n55:     const task = await getTask(input.id);\n56:     if (!task) throw new Error(\"Task not found\");\n57:     return task;\n58:   });\n59: \n60: export const taskList = protectedProcedure\n61:   .input(listTasksSchema)\n62:   .handler(async ({ input }) => {\n63:     const result = await listTasks({\n64:       cursor: input.cursor,\n65:       filters: {\n66:         archived: input.archived,\n67:         assigneeId: input.assigneeId,\n68:         deadlineFrom: input.deadlineFrom,\n69:         deadlineTo: input.deadlineTo,\n70:         entityId: input.entityId,\n71:         entityType: input.entityType,\n72:         search: input.search,\n73:         status: input.status,\n74:       },\n75:       limit: input.limit,\n76:       sortBy: input.sortBy,\n77:       sortOrder: input.sortOrder,\n78:     });\n79:     return result;\n80:   });\n81: \n82: export const taskListEvents = protectedProcedure\n83:   .input(listEventsSchema)\n84:   .handler(async ({ input }) => {\n85:     return listEvents(input.taskId, input.cursor, input.limit ?? 50);\n86:   });\n87: \n88: export const taskAddLink = protectedProcedure\n89:   .input(addLinkSchema)\n90:   .handler(async ({ input }) => {\n91:     const link = await addLink(input.taskId, input.entityType, input.entityId);\n92:     return link;\n93:   });\n94: \n95: export const taskRemoveLink = protectedProcedure\n96:   .input(removeLinkSchema)\n97:   .handler(async ({ input }) => {\n98:     await removeLink(input.linkId);\n99:     return { success: true };\n100:   });\n101: \n102: export const taskStats = protectedProcedure\n103:   .input(taskStatsSchema)\n104:   .handler(async () => {\n105:     return getTaskStats();\n106:   });\n\n(End of file - total 106 lines)\n</content>",
+            "metadata": {
+              "preview": "import { protectedProcedure } from \"@/rpc/middleware\";\nimport {\n  addLinkSchema,\n  archiveTaskSchema,\n  createTaskSchema,\n  getTaskByIdSchema,\n  listEventsSchema,\n  listTasksSchema,\n  removeLinkSchema,\n  taskStatsSchema,\n  updateTaskSchema,\n} from \"@/rpc/schema/task\";\nimport { listEvents } from \"@/services/task-event-service\";\nimport { addLink, removeLink } from \"@/services/task-link-service\";\nimport {\n  archiveTask as archiveTaskService,\n  createTask,\n  getTask,\n  getTaskStats,\n  listTasks,",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/rpc/router/task.ts",
+            "time": {
+              "start": 1779013276706,
+              "end": 1779013276725
+            }
+          },
+          "id": "prt_e35745394001bsdEB7871fFWcQ",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e3574469c001KrJGYULjchF55Y"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_7b6148f4727b41b59ac69364",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/schema/auth.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/schema/auth.ts</path>\n<type>file</type>\n<content>\n1: import { relations } from \"drizzle-orm\";\n2: import {\n3:   boolean,\n4:   foreignKey,\n5:   index,\n6:   jsonb,\n7:   pgTable,\n8:   text,\n9:   timestamp,\n10: } from \"drizzle-orm/pg-core\";\n11: \n12: import type { PermissionSet } from \"@/lib/auth/access-control\";\n13: \n14: export const user = pgTable(\n15:   \"user\",\n16:   {\n17:     banExpires: timestamp(\"ban_expires\"),\n18:     banned: boolean(\"banned\").default(false),\n19:     banReason: text(\"ban_reason\"),\n20:     createdAt: timestamp(\"created_at\").defaultNow().notNull(),\n21:     email: text(\"email\").notNull().unique(),\n22:     emailVerified: boolean(\"email_verified\").default(false).notNull(),\n23:     id: text(\"id\").primaryKey(),\n24:     image: text(\"image\"),\n25:     name: text(\"name\").notNull(),\n26:     permissions: jsonb(\"permissions\").$type<PermissionSet>(),\n27:     phoneNumber: text(\"phone_number\").unique(),\n28:     phoneNumberVerified: boolean(\"phone_number_verified\"),\n29:     role: text(\"role\"),\n30:     supervisorId: text(\"supervisor_id\"),\n31:     updatedAt: timestamp(\"updated_at\")\n32:       .defaultNow()\n33:       .$onUpdate(() => /* @__PURE__ */ new Date())\n34:       .notNull(),\n35:   },\n36:   (table) => [\n37:     foreignKey({\n38:       columns: [table.supervisorId],\n39:       foreignColumns: [table.id],\n40:       name: \"user_supervisor_id_fkey\",\n41:     }).onDelete(\"set null\"),\n42:   ],\n43: );\n44: \n45: export const session = pgTable(\n46:   \"session\",\n47:   {\n48:     createdAt: timestamp(\"created_at\").defaultNow().notNull(),\n49:     expiresAt: timestamp(\"expires_at\").notNull(),\n50:     id: text(\"id\").primaryKey(),\n51:     impersonatedBy: text(\"impersonated_by\"),\n52:     ipAddress: text(\"ip_address\"),\n53:     token: text(\"token\").notNull().unique(),\n54:     updatedAt: timestamp(\"updated_at\")\n55:       .$onUpdate(() => /* @__PURE__ */ new Date())\n56:       .notNull(),\n57:     userAgent: text(\"user_agent\"),\n58:     userId: text(\"user_id\")\n59:       .notNull()\n60:       .references(() => user.id, { onDelete: \"cascade\" }),\n61:   },\n62:   (table) => [index(\"session_userId_idx\").on(table.userId)],\n63: );\n64: \n65: export const account = pgTable(\n66:   \"account\",\n67:   {\n68:     accessToken: text(\"access_token\"),\n69:     accessTokenExpiresAt: timestamp(\"access_token_expires_at\"),\n70:     accountId: text(\"account_id\").notNull(),\n71:     createdAt: timestamp(\"created_at\").defaultNow().notNull(),\n72:     id: text(\"id\").primaryKey(),\n73:     idToken: text(\"id_token\"),\n74:     password: text(\"password\"),\n75:     providerId: text(\"provider_id\").notNull(),\n76:     refreshToken: text(\"refresh_token\"),\n77:     refreshTokenExpiresAt: timestamp(\"refresh_token_expires_at\"),\n78:     scope: text(\"scope\"),\n79:     updatedAt: timestamp(\"updated_at\")\n80:       .$onUpdate(() => /* @__PURE__ */ new Date())\n81:       .notNull(),\n82:     userId: text(\"user_id\")\n83:       .notNull()\n84:       .references(() => user.id, { onDelete: \"cascade\" }),\n85:   },\n86:   (table) => [index(\"account_userId_idx\").on(table.userId)],\n87: );\n88: \n89: export const verification = pgTable(\n90:   \"verification\",\n91:   {\n92:     createdAt: timestamp(\"created_at\").defaultNow().notNull(),\n93:     expiresAt: timestamp(\"expires_at\").notNull(),\n94:     id: text(\"id\").primaryKey(),\n95:     identifier: text(\"identifier\").notNull(),\n96:     updatedAt: timestamp(\"updated_at\")\n97:       .defaultNow()\n98:       .$onUpdate(() => /* @__PURE__ */ new Date())\n99:       .notNull(),\n100:     value: text(\"value\").notNull(),\n101:   },\n102:   (table) => [index(\"verification_identifier_idx\").on(table.identifier)],\n103: );\n104: \n105: export const userRelations = relations(user, ({ many, one }) => ({\n106:   accounts: many(account),\n107:   sessions: many(session),\n108:   subordinates: many(user, {\n109:     relationName: \"supervisor\",\n110:   }),\n111:   supervisor: one(user, {\n112:     fields: [user.supervisorId],\n113:     references: [user.id],\n114:     relationName: \"supervisor\",\n115:   }),\n116: }));\n117: \n118: export const sessionRelations = relations(session, ({ one }) => ({\n119:   user: one(user, {\n120:     fields: [session.userId],\n121:     references: [user.id],\n122:   }),\n123: }));\n124: \n125: export const accountRelations = relations(account, ({ one }) => ({\n126:   user: one(user, {\n127:     fields: [account.userId],\n128:     references: [user.id],\n129:   }),\n130: }));\n\n(End of file - total 130 lines)\n</content>",
+            "metadata": {
+              "preview": "import { relations } from \"drizzle-orm\";\nimport {\n  boolean,\n  foreignKey,\n  index,\n  jsonb,\n  pgTable,\n  text,\n  timestamp,\n} from \"drizzle-orm/pg-core\";\n\nimport type { PermissionSet } from \"@/lib/auth/access-control\";\n\nexport const user = pgTable(\n  \"user\",\n  {\n    banExpires: timestamp(\"ban_expires\"),\n    banned: boolean(\"banned\").default(false),\n    banReason: text(\"ban_reason\"),\n    createdAt: timestamp(\"created_at\").defaultNow().notNull(),",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/schema/auth.ts",
+            "time": {
+              "start": 1779013276867,
+              "end": 1779013276876
+            }
+          },
+          "id": "prt_e35745438001G0zd45OmGfhMtR",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e3574469c001KrJGYULjchF55Y"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_617f9aa9e9b34e30b4cb3ed9",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/schema/index.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/schema/index.ts</path>\n<type>file</type>\n<content>\n1: export * from \"./auth\";\n2: export * from \"./client\";\n3: export * from \"./client-contract\";\n4: export * from \"./job-mandate\";\n5: export * from \"./notification\";\n6: export * from \"./prospect\";\n7: export * from \"./prospect-mandate\";\n8: export * from \"./reminder\";\n9: export * from \"./task\";\n\n(End of file - total 9 lines)\n</content>",
+            "metadata": {
+              "preview": "export * from \"./auth\";\nexport * from \"./client\";\nexport * from \"./client-contract\";\nexport * from \"./job-mandate\";\nexport * from \"./notification\";\nexport * from \"./prospect\";\nexport * from \"./prospect-mandate\";\nexport * from \"./reminder\";\nexport * from \"./task\";",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/schema/index.ts",
+            "time": {
+              "start": 1779013277102,
+              "end": 1779013277113
+            }
+          },
+          "id": "prt_e357454df001ernKAI3BQ3kVnV",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e3574469c001KrJGYULjchF55Y"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_76e9322e732040e4bcb2c979",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/rpc/router/notification.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/rpc/router/notification.ts</path>\n<type>file</type>\n<content>\n1: import { protectedProcedure } from \"@/rpc/middleware\";\n2: import {\n3:   listNotificationsSchema,\n4:   markAllNotificationsReadSchema,\n5:   markNotificationReadSchema,\n6: } from \"@/rpc/schema/notification\";\n7: import {\n8:   getUnreadCount,\n9:   listNotifications,\n10:   markAllRead,\n11:   markRead,\n12: } from \"@/services/notification-service\";\n13: \n14: export const notificationList = protectedProcedure\n15:   .meta({ permission: { action: \"read\", resource: \"notification\" } })\n16:   .input(listNotificationsSchema)\n17:   .handler(async ({ input, context }) => {\n18:     const [items, unreadCount] = await Promise.all([\n19:       listNotifications({\n20:         limit: input.limit,\n21:         unreadOnly: input.unreadOnly,\n22:         userId: context.user.id,\n23:       }),\n24:       getUnreadCount(context.user.id),\n25:     ]);\n26: \n27:     return { items, unreadCount };\n28:   });\n29: \n30: export const notificationMarkRead = protectedProcedure\n31:   .meta({ permission: { action: \"update\", resource: \"notification\" } })\n32:   .input(markNotificationReadSchema)\n33:   .handler(async ({ input, context }) => {\n34:     await markRead(input.id, context.user.id);\n35:     return { success: true };\n36:   });\n37: \n38: export const notificationMarkAllRead = protectedProcedure\n39:   .meta({ permission: { action: \"update\", resource: \"notification\" } })\n40:   .input(markAllNotificationsReadSchema)\n41:   .handler(async ({ context }) => {\n42:     await markAllRead(context.user.id);\n43:     return { success: true };\n44:   });\n\n(End of file - total 44 lines)\n</content>",
+            "metadata": {
+              "preview": "import { protectedProcedure } from \"@/rpc/middleware\";\nimport {\n  listNotificationsSchema,\n  markAllNotificationsReadSchema,\n  markNotificationReadSchema,\n} from \"@/rpc/schema/notification\";\nimport {\n  getUnreadCount,\n  listNotifications,\n  markAllRead,\n  markRead,\n} from \"@/services/notification-service\";\n\nexport const notificationList = protectedProcedure\n  .meta({ permission: { action: \"read\", resource: \"notification\" } })\n  .input(listNotificationsSchema)\n  .handler(async ({ input, context }) => {\n    const [items, unreadCount] = await Promise.all([\n      listNotifications({\n        limit: input.limit,",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/rpc/router/notification.ts",
+            "time": {
+              "start": 1779013277680,
+              "end": 1779013277696
+            }
+          },
+          "id": "prt_e357455b0001m26R2bkVo4eSU2",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e3574469c001KrJGYULjchF55Y"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_74493ce255b94678a01ccf73",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/rpc/router/reminder.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/rpc/router/reminder.ts</path>\n<type>file</type>\n<content>\n1: import { protectedProcedure } from \"@/rpc/middleware\";\n2: import {\n3:   archiveReminderSchema,\n4:   createReminderSchema,\n5:   listRemindersSchema,\n6: } from \"@/rpc/schema/task\";\n7: import {\n8:   archiveReminder,\n9:   createReminder,\n10:   listReminders,\n11: } from \"@/services/reminder-service\";\n12: \n13: export const reminderCreate = protectedProcedure\n14:   .input(createReminderSchema)\n15:   .handler(async ({ input, context }) => {\n16:     const userId = context.user.id;\n17:     const reminder = await createReminder({\n18:       ...input,\n19:       userId,\n20:     });\n21:     return reminder;\n22:   });\n23: \n24: export const reminderArchive = protectedProcedure\n25:   .input(archiveReminderSchema)\n26:   .handler(async ({ input }) => {\n27:     await archiveReminder(input.id);\n28:     return { success: true };\n29:   });\n30: \n31: export const reminderList = protectedProcedure\n32:   .input(listRemindersSchema)\n33:   .handler(async ({ input }) => {\n34:     const reminders = await listReminders({\n35:       standalone: input.standalone,\n36:       taskId: input.taskId,\n37:       userId: input.userId,\n38:     });\n39:     return reminders;\n40:   });\n\n(End of file - total 40 lines)\n</content>",
+            "metadata": {
+              "preview": "import { protectedProcedure } from \"@/rpc/middleware\";\nimport {\n  archiveReminderSchema,\n  createReminderSchema,\n  listRemindersSchema,\n} from \"@/rpc/schema/task\";\nimport {\n  archiveReminder,\n  createReminder,\n  listReminders,\n} from \"@/services/reminder-service\";\n\nexport const reminderCreate = protectedProcedure\n  .input(createReminderSchema)\n  .handler(async ({ input, context }) => {\n    const userId = context.user.id;\n    const reminder = await createReminder({\n      ...input,\n      userId,\n    });",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/rpc/router/reminder.ts",
+            "time": {
+              "start": 1779013277913,
+              "end": 1779013277925
+            }
+          },
+          "id": "prt_e3574580b001Zy5ecu1QG9PngR",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e3574469c001KrJGYULjchF55Y"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_2e90aafcaa74496ca24938e2",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/rpc/router/prospect.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/rpc/router/prospect.ts</path>\n<type>file</type>\n<content>\n1: import { protectedProcedure } from \"@/rpc/middleware\";\n2: import {\n3:   archiveProspectSchema,\n4:   createProspectSchema,\n5:   getProspectByIdSchema,\n6:   listProspectEventsSchema,\n7:   listProspectsSchema,\n8:   updateProspectSchema,\n9: } from \"@/rpc/schema/prospect\";\n10: import { listProspectEvents } from \"@/services/prospect-event-service\";\n11: import {\n12:   archiveProspect as archiveProspectService,\n13:   createProspect,\n14:   getProspect,\n15:   listProspects,\n16:   updateProspect,\n17: } from \"@/services/prospect-service\";\n18: \n19: export const prospectCreate = protectedProcedure\n20:   .meta({ permission: { action: \"create\", resource: \"prospects\" } })\n21:   .input(createProspectSchema)\n22:   .handler(async ({ input, context }) => {\n23:     const prospect = await createProspect({\n24:       ...input,\n25:       createdBy: context.user.id,\n26:     });\n27:     return prospect;\n28:   });\n29: \n30: export const prospectUpdate = protectedProcedure\n31:   .meta({ permission: { action: \"update\", resource: \"prospects\" } })\n32:   .input(updateProspectSchema)\n33:   .handler(async ({ input, context }) => {\n34:     const { id, ...updates } = input;\n35:     const userId = context.user.id;\n36:     const prospect = await updateProspect(id, updates, userId);\n37:     return prospect;\n38:   });\n39: \n40: export const prospectArchive = protectedProcedure\n41:   .meta({ permission: { action: \"archive\", resource: \"prospects\" } })\n42:   .input(archiveProspectSchema)\n43:   .handler(async ({ input, context }) => {\n44:     const userId = context.user.id;\n45:     const prospect = await archiveProspectService(input.id, userId);\n46:     return prospect;\n47:   });\n48: \n49: export const prospectGetById = protectedProcedure\n50:   .meta({ permission: { action: \"read\", resource: \"prospects\" } })\n51:   .input(getProspectByIdSchema)\n52:   .handler(async ({ input }) => {\n53:     const prospect = await getProspect(input.id);\n54:     if (!prospect) throw new Error(\"Prospect not found\");\n55:     return prospect;\n56:   });\n57: \n58: export const prospectList = protectedProcedure\n59:   .meta({ permission: { action: \"read\", resource: \"prospects\" } })\n60:   .input(listProspectsSchema)\n61:   .handler(async ({ input }) => {\n62:     const result = await listProspects({\n63:       cursor: input.cursor,\n64:       filters: {\n65:         archived: input.archived,\n66:         search: input.search,\n67:       },\n68:       limit: input.limit,\n69:       sortBy: input.sortBy,\n70:       sortOrder: input.sortOrder,\n71:     });\n72:     return result;\n73:   });\n74: \n75: export const prospectListEvents = protectedProcedure\n76:   .meta({ permission: { action: \"read\", resource: \"prospects\" } })\n77:   .input(listProspectEventsSchema)\n78:   .handler(async ({ input }) => {\n79:     return listProspectEvents(\n80:       input.prospectId,\n81:       input.cursor,\n82:       input.limit ?? 50,\n83:     );\n84:   });\n\n(End of file - total 84 lines)\n</content>",
+            "metadata": {
+              "preview": "import { protectedProcedure } from \"@/rpc/middleware\";\nimport {\n  archiveProspectSchema,\n  createProspectSchema,\n  getProspectByIdSchema,\n  listProspectEventsSchema,\n  listProspectsSchema,\n  updateProspectSchema,\n} from \"@/rpc/schema/prospect\";\nimport { listProspectEvents } from \"@/services/prospect-event-service\";\nimport {\n  archiveProspect as archiveProspectService,\n  createProspect,\n  getProspect,\n  listProspects,\n  updateProspect,\n} from \"@/services/prospect-service\";\n\nexport const prospectCreate = protectedProcedure\n  .meta({ permission: { action: \"create\", resource: \"prospects\" } })",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/rpc/router/prospect.ts",
+            "time": {
+              "start": 1779013278196,
+              "end": 1779013278283
+            }
+          },
+          "id": "prt_e357458df001fNqn3NRc8A57Y5",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e3574469c001KrJGYULjchF55Y"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_72bbf29998df46e69edaf90b",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/rpc/router/client-contract.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/rpc/router/client-contract.ts</path>\n<type>file</type>\n<content>\n1: import { protectedProcedure } from \"@/rpc/middleware\";\n2: import {\n3:   archiveContractSchema,\n4:   createContractSchema,\n5:   getContractByIdSchema,\n6:   listContractEventsSchema,\n7:   listContractsSchema,\n8:   updateContractSchema,\n9: } from \"@/rpc/schema/client-contract\";\n10: import {\n11:   archiveContract,\n12:   createContract,\n13:   getContract,\n14:   listContractEvents,\n15:   listContracts,\n16:   updateContract,\n17: } from \"@/services/client-contract-service\";\n18: \n19: export const contractCreate = protectedProcedure\n20:   .meta({ permission: { action: \"create\", resource: \"client_contracts\" } })\n21:   .input(createContractSchema)\n22:   .handler(async ({ context, input }) => {\n23:     const contract = await createContract(input, context.user.id);\n24:     return contract;\n25:   });\n26: \n27: export const contractList = protectedProcedure\n28:   .meta({ permission: { action: \"read\", resource: \"client_contracts\" } })\n29:   .input(listContractsSchema)\n30:   .handler(async ({ input }) => {\n31:     return listContracts({\n32:       cursor: input.cursor,\n33:       filters: {\n34:         archived: input.archived,\n35:         assigneeId: input.assigneeId,\n36:         clientId: input.clientId,\n37:         search: input.search,\n38:         status: input.status,\n39:       },\n40:       limit: input.limit,\n41:       sortBy: input.sortBy,\n42:       sortOrder: input.sortOrder,\n43:     });\n44:   });\n45: \n46: export const contractGetById = protectedProcedure\n47:   .meta({ permission: { action: \"read\", resource: \"client_contracts\" } })\n48:   .input(getContractByIdSchema)\n49:   .handler(async ({ input }) => {\n50:     const contract = await getContract(input.id);\n51:     if (!contract) throw new Error(\"Contract not found\");\n52:     return contract;\n53:   });\n54: \n55: export const contractUpdate = protectedProcedure\n56:   .meta({ permission: { action: \"update\", resource: \"client_contracts\" } })\n57:   .input(updateContractSchema)\n58:   .handler(async ({ context, input }) => {\n59:     const { id, ...updates } = input;\n60:     return updateContract(id, updates, context.user.id);\n61:   });\n62: \n63: export const contractArchive = protectedProcedure\n64:   .meta({ permission: { action: \"archive\", resource: \"client_contracts\" } })\n65:   .input(archiveContractSchema)\n66:   .handler(async ({ context, input }) => {\n67:     return archiveContract(input.id, context.user.id);\n68:   });\n69: \n70: export const contractListEvents = protectedProcedure\n71:   .meta({ permission: { action: \"read\", resource: \"client_contracts\" } })\n72:   .input(listContractEventsSchema)\n73:   .handler(async ({ input }) => {\n74:     return listContractEvents(\n75:       input.contractId,\n76:       input.cursor,\n77:       input.limit ?? 50,\n78:     );\n79:   });\n\n(End of file - total 79 lines)\n</content>",
+            "metadata": {
+              "preview": "import { protectedProcedure } from \"@/rpc/middleware\";\nimport {\n  archiveContractSchema,\n  createContractSchema,\n  getContractByIdSchema,\n  listContractEventsSchema,\n  listContractsSchema,\n  updateContractSchema,\n} from \"@/rpc/schema/client-contract\";\nimport {\n  archiveContract,\n  createContract,\n  getContract,\n  listContractEvents,\n  listContracts,\n  updateContract,\n} from \"@/services/client-contract-service\";\n\nexport const contractCreate = protectedProcedure\n  .meta({ permission: { action: \"create\", resource: \"client_contracts\" } })",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/rpc/router/client-contract.ts",
+            "time": {
+              "start": 1779013278376,
+              "end": 1779013278518
+            }
+          },
+          "id": "prt_e357459fe001Jq1KWbuAaUxQJr",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e3574469c001KrJGYULjchF55Y"
+        },
+        {
+          "type": "tool",
+          "tool": "grep",
+          "callID": "call_0280a3b076a94859be39a92d",
+          "state": {
+            "status": "completed",
+            "input": {
+              "pattern": "user",
+              "include": "src/services/*.ts"
+            },
+            "output": "Found 76 matches\n/home/aditya/projects/alpauls-ats/src/services/task-event-service.ts:\n  Line 32:         userId: task.assigneeId,\n\n  Line 47:         userId: newValue,\n\n\n/home/aditya/projects/alpauls-ats/src/services/task-service.ts:\n  Line 5: import { reminders, taskLinks, tasks, user } from \"@/schema\";\n\n  Line 71:   userId: string,\n\n  Line 109:         await recordEvent(id, columnMap[field], oldStr, newStr, userId);\n\n  Line 130: export async function archiveTask(id: number, userId: string) {\n\n  Line 131:   return updateTask(id, { archived: true }, userId);\n\n  Line 139:       assigneeImage: user.image,\n\n  Line 140:       assigneeName: user.name,\n\n  Line 151:     .leftJoin(user, eq(tasks.assigneeId, user.id))\n\n  Line 258:         assigneeImage: user.image,\n\n  Line 259:         assigneeName: user.name,\n\n  Line 270:       .leftJoin(user, eq(tasks.assigneeId, user.id))\n\n  Line 284:       assigneeImage: user.image,\n\n  Line 285:       assigneeName: user.name,\n\n  Line 296:     .leftJoin(user, eq(tasks.assigneeId, user.id))\n\n\n/home/aditya/projects/alpauls-ats/src/services/supervisor-hierarchy-service.ts:\n  Line 5: import { user } from \"@/schema\";\n\n  Line 10:   userId: string,\n\n  Line 13:   const cached = cache?.get(userId);\n\n  Line 18:       SELECT id FROM \"user\" WHERE supervisor_id = ${userId}\n\n  Line 20:       SELECT u.id FROM \"user\" u\n\n  Line 30:   cache?.set(userId, ids);\n\n  Line 35:   userId: string,\n\n  Line 38:     .select({ id: user.id })\n\n  Line 39:     .from(user)\n\n  Line 40:     .where(eq(user.supervisorId, userId));\n\n  Line 46:   userId: string,\n\n  Line 50:   if (userId === newSupervisorId) {\n\n  Line 52:       message: \"A user cannot be their own supervisor\",\n\n  Line 56:   const subordinateIds = await getSubordinateIds(userId, cache);\n\n\n/home/aditya/projects/alpauls-ats/src/services/prospect-service.ts:\n  Line 79:   userId: string,\n\n  Line 115:         await recordProspectEvent(id, columnMap[field], oldStr, newStr, userId);\n\n  Line 128: export async function archiveProspect(id: number, userId: string) {\n\n  Line 129:   return updateProspect(id, { archived: true }, userId);\n\n\n/home/aditya/projects/alpauls-ats/src/services/client-contract-service.ts:\n  Line 6: import { clientContracts, clients, contractEvents, user } from \"@/schema\";\n\n  Line 85: const bdUser = alias(user, \"bd_user\");\n\n  Line 86: const rmUser = alias(user, \"rm_user\");\n\n  Line 131:   userId: string,\n\n  Line 166:       await recordContractEvent(contract.id, field, null, value, userId);\n\n  Line 176:   userId: string,\n\n  Line 202:           userId,\n\n  Line 219: export async function archiveContract(id: number, userId: string) {\n\n  Line 220:   return updateContract(id, { archived: true }, userId);\n\n\n/home/aditya/projects/alpauls-ats/src/services/client-service.ts:\n  Line 5: import { clients, user } from \"@/schema\";\n\n  Line 43:   userId?: string;\n\n  Line 100:   userId: string,\n\n  Line 149:         await recordClientEvent(id, columnMap[field], oldStr, newStr, userId);\n\n  Line 162: export async function archiveClient(id: number, userId: string) {\n\n  Line 163:   return updateClient(id, { archived: true }, userId);\n\n  Line 171:       assigneeImage: user.image,\n\n  Line 172:       assigneeName: user.name,\n\n  Line 185:     .leftJoin(user, eq(clients.assigneeId, user.id))\n\n  Line 238:   if (input.userId) {\n\n  Line 240:       input.userId,\n\n  Line 243:     const visibleIds = [input.userId, ...subordinateIds];\n\n  Line 256:       assigneeImage: user.image,\n\n  Line 257:       assigneeName: user.name,\n\n  Line 267:     .leftJoin(user, eq(clients.assigneeId, user.id))\n\n\n/home/aditya/projects/alpauls-ats/src/services/reminder-service.ts:\n  Line 9:   userId: string;\n\n  Line 50:         userId: input.userId,\n\n  Line 63:       userId: input.userId,\n\n  Line 79:   userId?: string;\n\n  Line 90:   if (filter.userId !== undefined) {\n\n  Line 91:     conditions.push(eq(reminders.userId, filter.userId));\n\n\n/home/aditya/projects/alpauls-ats/src/services/notification-service.ts:\n  Line 12:   userId: string;\n\n  Line 24:       userId: input.userId,\n\n  Line 34:   userId: string;\n\n  Line 38:   const conditions = [eq(notifications.userId, filter.userId)];\n\n  Line 54: export async function getUnreadCount(userId: string) {\n\n  Line 58:     .where(and(eq(notifications.userId, userId), isNull(notifications.readAt)));\n\n  Line 63: export async function markRead(id: number, userId: string) {\n\n  Line 67:     .where(and(eq(notifications.id, id), eq(notifications.userId, userId)));\n\n  Line 70: export async function markAllRead(userId: string) {\n\n  Line 74:     .where(and(eq(notifications.userId, userId), isNull(notifications.readAt)));\n\n  Line 77: export async function archiveNotification(id: number, userId: string) {\n\n  Line 81:     .where(and(eq(notifications.id, id), eq(notifications.userId, userId)));\n",
+            "metadata": {
+              "matches": 76,
+              "truncated": false
+            },
+            "title": "user",
+            "time": {
+              "start": 1779013278498,
+              "end": 1779013278603
+            }
+          },
+          "id": "prt_e35745ad0001NqeQw7c78ZTePZ",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e3574469c001KrJGYULjchF55Y"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "a77bbadd8c7afd42872a7cb9ffeb7fea650952ce",
+          "type": "step-finish",
+          "tokens": {
+            "total": 11816,
+            "input": 4647,
+            "output": 266,
+            "reasoning": 119,
+            "cache": {
+              "write": 0,
+              "read": 6784
+            }
+          },
+          "cost": 0,
+          "id": "prt_e35745c4f001u7jVa9j1DEE5r2",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e3574469c001KrJGYULjchF55Y"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_e35743a43001j6xMtSmJ7PWp4w",
+        "role": "assistant",
+        "mode": "explore",
+        "agent": "explore",
+        "path": {
+          "cwd": "/home/aditya/projects/alpauls-ats",
+          "root": "/home/aditya/projects/alpauls-ats"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 21466,
+          "input": 21255,
+          "output": 106,
+          "reasoning": 41,
+          "cache": {
+            "write": 0,
+            "read": 64
+          }
+        },
+        "modelID": "GLM-5.1",
+        "providerID": "wafer.ai",
+        "time": {
+          "created": 1779013278892,
+          "completed": 1779013283772
+        },
+        "finish": "tool-calls",
+        "id": "msg_e35745cac001i048Gto5wnqZCK",
+        "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh"
+      },
+      "parts": [
+        {
+          "snapshot": "a77bbadd8c7afd42872a7cb9ffeb7fea650952ce",
+          "type": "step-start",
+          "id": "prt_e3574686f001RAFu0QwtiqEnVs",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35745cac001i048Gto5wnqZCK"
+        },
+        {
+          "type": "reasoning",
+          "text": "Now I need to also check for the RPC schema files that define the input schemas, particularly the admin schema that defines the user-related input schemas. Let me also check for any user service file specifically.",
+          "time": {
+            "start": 1779013281905,
+            "end": 1779013282278
+          },
+          "id": "prt_e35746871001landCbD1VFbMis",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35745cac001i048Gto5wnqZCK"
+        },
+        {
+          "type": "text",
+          "text": "Let me also read the RPC schema files that define the input schemas for the admin (user) operations, and check for any user-specific service or schema files:",
+          "time": {
+            "start": 1779013282280,
+            "end": 1779013283684
+          },
+          "id": "prt_e357469e8001wfpheBT9lSZAwj",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35745cac001i048Gto5wnqZCK"
+        },
+        {
+          "type": "tool",
+          "tool": "glob",
+          "callID": "call_78e1231b9e7246c69ab8982d",
+          "state": {
+            "status": "completed",
+            "input": {
+              "pattern": "src/rpc/schema/**/*.ts"
+            },
+            "output": "/home/aditya/projects/alpauls-ats/src/rpc/schema/client-contract.ts\n/home/aditya/projects/alpauls-ats/src/rpc/schema/client.ts\n/home/aditya/projects/alpauls-ats/src/rpc/schema/prospect.ts\n/home/aditya/projects/alpauls-ats/src/rpc/schema/admin.ts\n/home/aditya/projects/alpauls-ats/src/rpc/schema/__tests__/client-contract.test.ts\n/home/aditya/projects/alpauls-ats/src/rpc/schema/notification.ts\n/home/aditya/projects/alpauls-ats/src/rpc/schema/task.ts\n/home/aditya/projects/alpauls-ats/src/rpc/schema/__tests__/task.test.ts",
+            "metadata": {
+              "count": 8,
+              "truncated": false
+            },
+            "title": "",
+            "time": {
+              "start": 1779013283271,
+              "end": 1779013283301
+            }
+          },
+          "id": "prt_e35746daf001toUaht0DSBb02k",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35745cac001i048Gto5wnqZCK"
+        },
+        {
+          "type": "tool",
+          "tool": "grep",
+          "callID": "call_4d11aad9bc554a55b26ab38e",
+          "state": {
+            "status": "completed",
+            "input": {
+              "pattern": "user.*service",
+              "include": "*.ts",
+              "path": "/home/aditya/projects/alpauls-ats/src/services"
+            },
+            "output": "No files found",
+            "metadata": {
+              "matches": 0,
+              "truncated": false
+            },
+            "title": "user.*service",
+            "time": {
+              "start": 1779013283536,
+              "end": 1779013283567
+            }
+          },
+          "id": "prt_e35746df4001sanq2WHp7TcaW4",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35745cac001i048Gto5wnqZCK"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_e195d89ad20d4f09a296c526",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/lib/constants.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/lib/constants.ts</path>\n<type>file</type>\n<content>\n1: import type { RoleCode } from \"./auth/access-control\";\n2: \n3: export const SITE_NAME = \"Alpauls\";\n4: \n5: export const API_VERSION = \"0.0.1\"; // todo: change on release\n6: \n7: export const ROLE_DISPLAY_NAMES: Record<RoleCode, string> = {\n8:   admin: \"Admin\",\n9:   bd: \"Business Developer\",\n10:   caller: \"Caller\",\n11:   custom: \"Custom\",\n12:   qc: \"Quality Checker\",\n13:   rm: \"Client Relationship Manager\",\n14:   sc: \"Talent Sourcer\",\n15:   tl: \"Team Leader\",\n16: };\n\n(End of file - total 16 lines)\n</content>",
+            "metadata": {
+              "preview": "import type { RoleCode } from \"./auth/access-control\";\n\nexport const SITE_NAME = \"Alpauls\";\n\nexport const API_VERSION = \"0.0.1\"; // todo: change on release\n\nexport const ROLE_DISPLAY_NAMES: Record<RoleCode, string> = {\n  admin: \"Admin\",\n  bd: \"Business Developer\",\n  caller: \"Caller\",\n  custom: \"Custom\",\n  qc: \"Quality Checker\",\n  rm: \"Client Relationship Manager\",\n  sc: \"Talent Sourcer\",\n  tl: \"Team Leader\",\n};",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/lib/constants.ts",
+            "time": {
+              "start": 1779013283655,
+              "end": 1779013283689
+            }
+          },
+          "id": "prt_e35746ee0001J3Qa5HkIj4zgE4",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35745cac001i048Gto5wnqZCK"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "a77bbadd8c7afd42872a7cb9ffeb7fea650952ce",
+          "type": "step-finish",
+          "tokens": {
+            "total": 21466,
+            "input": 21255,
+            "output": 106,
+            "reasoning": 41,
+            "cache": {
+              "write": 0,
+              "read": 64
+            }
+          },
+          "cost": 0,
+          "id": "prt_e35746f99001ItSNsBwBp6nYlR",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35745cac001i048Gto5wnqZCK"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_e35743a43001j6xMtSmJ7PWp4w",
+        "role": "assistant",
+        "mode": "explore",
+        "agent": "explore",
+        "path": {
+          "cwd": "/home/aditya/projects/alpauls-ats",
+          "root": "/home/aditya/projects/alpauls-ats"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 21935,
+          "input": 384,
+          "output": 93,
+          "reasoning": 18,
+          "cache": {
+            "write": 0,
+            "read": 21440
+          }
+        },
+        "modelID": "GLM-5.1",
+        "providerID": "wafer.ai",
+        "time": {
+          "created": 1779013283777,
+          "completed": 1779013287331
+        },
+        "finish": "tool-calls",
+        "id": "msg_e35746fc1001ukoTOgK7nkmXqb",
+        "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh"
+      },
+      "parts": [
+        {
+          "snapshot": "a77bbadd8c7afd42872a7cb9ffeb7fea650952ce",
+          "type": "step-start",
+          "id": "prt_e35747735001zpd0ufmJjA9K4H",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35746fc1001ukoTOgK7nkmXqb"
+        },
+        {
+          "type": "reasoning",
+          "text": "Let me also read the admin RPC schema and the RPC schema index if it exists.",
+          "time": {
+            "start": 1779013285687,
+            "end": 1779013286409
+          },
+          "id": "prt_e35747737001nWAfKG7hePpABi",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35746fc1001ukoTOgK7nkmXqb"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_a41309262fa0431c9fee69ab",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/rpc/schema/admin.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/rpc/schema/admin.ts</path>\n<type>file</type>\n<content>\n1: import { z } from \"zod\";\n2: \n3: export { memberFormSchema as createUserSchema } from \"@/schema/auth-form\";\n4: \n5: export const updateUserSchema = z.object({\n6:   banExpires: z\n7:     .string()\n8:     .datetime()\n9:     .optional()\n10:     .transform((v) => (v ? new Date(v) : null)),\n11:   banned: z.boolean().optional(),\n12:   banReason: z.string().optional(),\n13:   email: z.string().email().optional(),\n14:   name: z.string().optional(),\n15:   permissions: z.record(z.string(), z.array(z.string())).optional(),\n16:   role: z\n17:     .enum([\"admin\", \"bd\", \"rm\", \"sc\", \"tl\", \"caller\", \"qc\", \"custom\"])\n18:     .optional(),\n19:   supervisorId: z.string().optional(),\n20:   userId: z.string(),\n21: });\n22: \n23: export const archiveUserSchema = z.object({\n24:   userId: z.string(),\n25: });\n26: \n27: export const resetPasswordSchema = z.object({\n28:   newPassword: z.string().min(8),\n29:   userId: z.string(),\n30: });\n\n(End of file - total 30 lines)\n</content>",
+            "metadata": {
+              "preview": "import { z } from \"zod\";\n\nexport { memberFormSchema as createUserSchema } from \"@/schema/auth-form\";\n\nexport const updateUserSchema = z.object({\n  banExpires: z\n    .string()\n    .datetime()\n    .optional()\n    .transform((v) => (v ? new Date(v) : null)),\n  banned: z.boolean().optional(),\n  banReason: z.string().optional(),\n  email: z.string().email().optional(),\n  name: z.string().optional(),\n  permissions: z.record(z.string(), z.array(z.string())).optional(),\n  role: z\n    .enum([\"admin\", \"bd\", \"rm\", \"sc\", \"tl\", \"caller\", \"qc\", \"custom\"])\n    .optional(),\n  supervisorId: z.string().optional(),\n  userId: z.string(),",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/rpc/schema/admin.ts",
+            "time": {
+              "start": 1779013286633,
+              "end": 1779013286652
+            }
+          },
+          "id": "prt_e35747a0b001wJaiYUJ13QVRrU",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35746fc1001ukoTOgK7nkmXqb"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_4539583f1ff24d25a0a7ea6c",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/rpc/schema/client.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/rpc/schema/client.ts</path>\n<type>file</type>\n<content>\n1: import { z } from \"zod\";\n2: \n3: export {\n4:   clientFormSchema as createClientSchema,\n5:   clientUpdateFormSchema as updateClientSchema,\n6: } from \"@/schema/client-form\";\n7: \n8: export const listClientsSchema = z.object({\n9:   archived: z.boolean().optional(),\n10:   assigneeId: z.array(z.string()).optional(),\n11:   cursor: z.string().optional(),\n12:   limit: z.number().int().min(1).max(100).optional(),\n13:   search: z.string().optional(),\n14:   sortBy: z.enum([\"name\", \"createdAt\"]).optional(),\n15:   sortOrder: z.enum([\"asc\", \"desc\"]).optional(),\n16: });\n17: \n18: export const getClientByIdSchema = z.object({\n19:   id: z.number().int().positive(),\n20: });\n21: \n22: export const archiveClientSchema = z.object({\n23:   id: z.number().int().positive(),\n24: });\n25: \n26: export const listClientEventsSchema = z.object({\n27:   clientId: z.number().int().positive(),\n28:   cursor: z.string().optional(),\n29:   limit: z.number().int().min(1).max(100).optional(),\n30: });\n31: \n32: export const getUploadUrlSchema = z.object({\n33:   contentType: z.string().min(1),\n34:   filename: z.string().min(1),\n35: });\n\n(End of file - total 35 lines)\n</content>",
+            "metadata": {
+              "preview": "import { z } from \"zod\";\n\nexport {\n  clientFormSchema as createClientSchema,\n  clientUpdateFormSchema as updateClientSchema,\n} from \"@/schema/client-form\";\n\nexport const listClientsSchema = z.object({\n  archived: z.boolean().optional(),\n  assigneeId: z.array(z.string()).optional(),\n  cursor: z.string().optional(),\n  limit: z.number().int().min(1).max(100).optional(),\n  search: z.string().optional(),\n  sortBy: z.enum([\"name\", \"createdAt\"]).optional(),\n  sortOrder: z.enum([\"asc\", \"desc\"]).optional(),\n});\n\nexport const getClientByIdSchema = z.object({\n  id: z.number().int().positive(),\n});",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/rpc/schema/client.ts",
+            "time": {
+              "start": 1779013286798,
+              "end": 1779013286826
+            }
+          },
+          "id": "prt_e35747aeb001l4Fx9dZ1GZ0fv4",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35746fc1001ukoTOgK7nkmXqb"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_8c001d5673bc47a6b4bbf8c0",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/services/supervisor-hierarchy-service.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/services/supervisor-hierarchy-service.ts</path>\n<type>file</type>\n<content>\n1: import { ORPCError } from \"@orpc/server\";\n2: import { eq, sql } from \"drizzle-orm\";\n3: \n4: import { db } from \"@/lib/db/server\";\n5: import { user } from \"@/schema\";\n6: \n7: export type SubordinateCache = Map<string, string[]>;\n8: \n9: export async function getSubordinateIds(\n10:   userId: string,\n11:   cache?: SubordinateCache,\n12: ): Promise<string[]> {\n13:   const cached = cache?.get(userId);\n14:   if (cached) return cached;\n15: \n16:   const result = await db.execute(sql`\n17:     WITH RECURSIVE subordinates AS (\n18:       SELECT id FROM \"user\" WHERE supervisor_id = ${userId}\n19:       UNION ALL\n20:       SELECT u.id FROM \"user\" u\n21:       INNER JOIN subordinates s ON u.supervisor_id = s.id\n22:     )\n23:     SELECT id FROM subordinates\n24:   `);\n25: \n26:   const ids = result.rows.map(\n27:     (row: Record<string, unknown>) => row.id as string,\n28:   );\n29: \n30:   cache?.set(userId, ids);\n31:   return ids;\n32: }\n33: \n34: export async function getDirectSubordinateIds(\n35:   userId: string,\n36: ): Promise<string[]> {\n37:   const rows = await db\n38:     .select({ id: user.id })\n39:     .from(user)\n40:     .where(eq(user.supervisorId, userId));\n41: \n42:   return rows.map((row) => row.id);\n43: }\n44: \n45: export async function validateNoCircularSupervisor(\n46:   userId: string,\n47:   newSupervisorId: string,\n48:   cache?: SubordinateCache,\n49: ): Promise<void> {\n50:   if (userId === newSupervisorId) {\n51:     throw new ORPCError(\"BAD_REQUEST\", {\n52:       message: \"A user cannot be their own supervisor\",\n53:     });\n54:   }\n55: \n56:   const subordinateIds = await getSubordinateIds(userId, cache);\n57:   if (subordinateIds.includes(newSupervisorId)) {\n58:     throw new ORPCError(\"BAD_REQUEST\", {\n59:       message: \"Circular supervisor chain detected\",\n60:     });\n61:   }\n62: }\n\n(End of file - total 62 lines)\n</content>",
+            "metadata": {
+              "preview": "import { ORPCError } from \"@orpc/server\";\nimport { eq, sql } from \"drizzle-orm\";\n\nimport { db } from \"@/lib/db/server\";\nimport { user } from \"@/schema\";\n\nexport type SubordinateCache = Map<string, string[]>;\n\nexport async function getSubordinateIds(\n  userId: string,\n  cache?: SubordinateCache,\n): Promise<string[]> {\n  const cached = cache?.get(userId);\n  if (cached) return cached;\n\n  const result = await db.execute(sql`\n    WITH RECURSIVE subordinates AS (\n      SELECT id FROM \"user\" WHERE supervisor_id = ${userId}\n      UNION ALL\n      SELECT u.id FROM \"user\" u",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/services/supervisor-hierarchy-service.ts",
+            "time": {
+              "start": 1779013287029,
+              "end": 1779013287045
+            }
+          },
+          "id": "prt_e35747bae0019I6MfxqDjkl4rp",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35746fc1001ukoTOgK7nkmXqb"
+        },
+        {
+          "type": "tool",
+          "tool": "glob",
+          "callID": "call_cfe2982d95d34394b3e98a9a",
+          "state": {
+            "status": "completed",
+            "input": {
+              "pattern": "src/rpc/schema/index.ts"
+            },
+            "output": "No files found",
+            "metadata": {
+              "count": 0,
+              "truncated": false
+            },
+            "title": "",
+            "time": {
+              "start": 1779013287196,
+              "end": 1779013287221
+            }
+          },
+          "id": "prt_e35747cc10011GfzJnZZhmSbai",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35746fc1001ukoTOgK7nkmXqb"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "21a524e87899fbdd54dddb73252fd752c85d3921",
+          "type": "step-finish",
+          "tokens": {
+            "total": 21935,
+            "input": 384,
+            "output": 93,
+            "reasoning": 18,
+            "cache": {
+              "write": 0,
+              "read": 21440
+            }
+          },
+          "cost": 0,
+          "id": "prt_e35747d7f001fqsxUz17g0rjzD",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35746fc1001ukoTOgK7nkmXqb"
+        },
+        {
+          "type": "patch",
+          "hash": "a77bbadd8c7afd42872a7cb9ffeb7fea650952ce",
+          "files": [
+            "/home/aditya/projects/alpauls-ats/src/rpc/schema/client-contract.ts"
+          ],
+          "id": "prt_e35747da1001BNZ9tR4h3hFsA8",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35746fc1001ukoTOgK7nkmXqb"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_e35743a43001j6xMtSmJ7PWp4w",
+        "role": "assistant",
+        "mode": "explore",
+        "agent": "explore",
+        "path": {
+          "cwd": "/home/aditya/projects/alpauls-ats",
+          "root": "/home/aditya/projects/alpauls-ats"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 23314,
+          "input": 1324,
+          "output": 74,
+          "reasoning": 28,
+          "cache": {
+            "write": 0,
+            "read": 21888
+          }
+        },
+        "modelID": "GLM-5.1",
+        "providerID": "wafer.ai",
+        "time": {
+          "created": 1779013287335,
+          "completed": 1779013290381
+        },
+        "finish": "tool-calls",
+        "id": "msg_e35747da7001VCjp5vCJCITu74",
+        "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh"
+      },
+      "parts": [
+        {
+          "snapshot": "21a524e87899fbdd54dddb73252fd752c85d3921",
+          "type": "step-start",
+          "id": "prt_e35748489001CZroY1JzYdEMUh",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35747da7001VCjp5vCJCITu74"
+        },
+        {
+          "type": "reasoning",
+          "text": "Now let me also read the auth-form schema to understand the createUserSchema that's being re-exported, and the db server file:",
+          "time": {
+            "start": 1779013289099,
+            "end": 1779013289509
+          },
+          "id": "prt_e3574848b001FBXxbXzBfJaepV",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35747da7001VCjp5vCJCITu74"
+        },
+        {
+          "type": "text",
+          "text": "Let me grab a few more related files - the auth form schema (for the createUser validation) and the DB server file:",
+          "time": {
+            "start": 1779013289510,
+            "end": 1779013290301
+          },
+          "id": "prt_e35748626001gpnSu6O4aTngqI",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35747da7001VCjp5vCJCITu74"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_20b94a58d81a4fbf871a68ce",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/schema/auth-form.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/schema/auth-form.ts</path>\n<type>file</type>\n<content>\n1: import { z } from \"zod\";\n2: \n3: const roleSchema = z.enum([\n4:   \"admin\",\n5:   \"bd\",\n6:   \"rm\",\n7:   \"sc\",\n8:   \"tl\",\n9:   \"caller\",\n10:   \"qc\",\n11:   \"custom\",\n12: ]);\n13: \n14: export const memberFormSchema = z.object({\n15:   email: z\n16:     .string()\n17:     .email()\n18:     .meta({ label: \"Email\", placeholder: \"email@example.com\" }),\n19:   name: z.string().min(1).meta({ label: \"Name\", placeholder: \"Full name\" }),\n20:   password: z.string().min(8).meta({\n21:     component: \"password\",\n22:     label: \"Password\",\n23:     placeholder: \"Minimum 8 characters\",\n24:   }),\n25:   permissions: z\n26:     .record(z.string(), z.array(z.string()))\n27:     .optional()\n28:     .meta({ label: \"Custom Permissions\" }),\n29:   role: roleSchema.meta({ label: \"Role\" }),\n30:   supervisorId: z\n31:     .string()\n32:     .optional()\n33:     .meta({ component: \"combobox\", label: \"Supervisor\" }),\n34: });\n35: \n36: export const memberUpdateFormSchema = z.object({\n37:   banned: z.boolean().optional(),\n38:   banReason: z.string().optional().meta({ label: \"Ban Reason\" }),\n39:   email: z\n40:     .string()\n41:     .email()\n42:     .optional()\n43:     .meta({ label: \"Email\", placeholder: \"email@example.com\" }),\n44:   id: z.string(),\n45:   name: z.string().optional().meta({ label: \"Name\", placeholder: \"Full name\" }),\n46:   permissions: z\n47:     .record(z.string(), z.array(z.string()))\n48:     .optional()\n49:     .meta({ label: \"Custom Permissions\" }),\n50:   role: roleSchema.optional().meta({ label: \"Role\" }),\n51:   supervisorId: z\n52:     .string()\n53:     .optional()\n54:     .meta({ component: \"combobox\", label: \"Supervisor\" }),\n55: });\n\n(End of file - total 55 lines)\n</content>",
+            "metadata": {
+              "preview": "import { z } from \"zod\";\n\nconst roleSchema = z.enum([\n  \"admin\",\n  \"bd\",\n  \"rm\",\n  \"sc\",\n  \"tl\",\n  \"caller\",\n  \"qc\",\n  \"custom\",\n]);\n\nexport const memberFormSchema = z.object({\n  email: z\n    .string()\n    .email()\n    .meta({ label: \"Email\", placeholder: \"email@example.com\" }),\n  name: z.string().min(1).meta({ label: \"Name\", placeholder: \"Full name\" }),\n  password: z.string().min(8).meta({",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/schema/auth-form.ts",
+            "time": {
+              "start": 1779013290106,
+              "end": 1779013290123
+            }
+          },
+          "id": "prt_e357487c4001muM5rGVr8SHVbM",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35747da7001VCjp5vCJCITu74"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_1859b9e55359416b9c7927b5",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/home/aditya/projects/alpauls-ats/src/lib/db/server.ts"
+            },
+            "output": "<path>/home/aditya/projects/alpauls-ats/src/lib/db/server.ts</path>\n<type>file</type>\n<content>\n1: import { drizzle } from \"drizzle-orm/node-postgres\";\n2: \n3: import * as schema from \"@/schema\";\n4: \n5: export const db = drizzle(process.env.DATABASE_URL || \"\", { schema });\n\n(End of file - total 5 lines)\n</content>",
+            "metadata": {
+              "preview": "import { drizzle } from \"drizzle-orm/node-postgres\";\n\nimport * as schema from \"@/schema\";\n\nexport const db = drizzle(process.env.DATABASE_URL || \"\", { schema });",
+              "truncated": false,
+              "loaded": []
+            },
+            "title": "src/lib/db/server.ts",
+            "time": {
+              "start": 1779013290299,
+              "end": 1779013290318
+            }
+          },
+          "id": "prt_e35748894001SkgrjpLSKUwI7I",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35747da7001VCjp5vCJCITu74"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "21a524e87899fbdd54dddb73252fd752c85d3921",
+          "type": "step-finish",
+          "tokens": {
+            "total": 23314,
+            "input": 1324,
+            "output": 74,
+            "reasoning": 28,
+            "cache": {
+              "write": 0,
+              "read": 21888
+            }
+          },
+          "cost": 0,
+          "id": "prt_e3574896d001qckQssR8fzua6D",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35747da7001VCjp5vCJCITu74"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_e35743a43001j6xMtSmJ7PWp4w",
+        "role": "assistant",
+        "mode": "explore",
+        "agent": "explore",
+        "path": {
+          "cwd": "/home/aditya/projects/alpauls-ats",
+          "root": "/home/aditya/projects/alpauls-ats"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 27893,
+          "input": 675,
+          "output": 3906,
+          "reasoning": 16,
+          "cache": {
+            "write": 0,
+            "read": 23296
+          }
+        },
+        "modelID": "GLM-5.1",
+        "providerID": "wafer.ai",
+        "time": {
+          "created": 1779013290385,
+          "completed": 1779013340605
+        },
+        "finish": "stop",
+        "id": "msg_e35748991001APyU01Vq4YkGkg",
+        "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh"
+      },
+      "parts": [
+        {
+          "snapshot": "21a524e87899fbdd54dddb73252fd752c85d3921",
+          "type": "step-start",
+          "id": "prt_e35749071001pfMLqiiTe4Xy3r",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35748991001APyU01Vq4YkGkg"
+        },
+        {
+          "type": "reasoning",
+          "text": "I now have all the information needed. Let me compile a comprehensive report.",
+          "time": {
+            "start": 1779013292148,
+            "end": 1779013292409
+          },
+          "id": "prt_e35749074001Yucs0AttFBqxwk",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35748991001APyU01Vq4YkGkg"
+        },
+        {
+          "type": "text",
+          "text": "Here is the complete report of all findings:\n\n---\n\n## 1. Main RPC Router — `/home/aditya/projects/alpauls-ats/src/rpc/router/index.ts`\n\n```ts\nimport * as admin from \"./admin\";\nimport {\n  clientArchive,\n  clientCreate,\n  clientGetById,\n  clientGetUploadUrl,\n  clientList,\n  clientListEvents,\n  clientUpdate,\n} from \"./client\";\nimport {\n  notificationList,\n  notificationMarkAllRead,\n  notificationMarkRead,\n} from \"./notification\";\nimport { reminderArchive, reminderCreate, reminderList } from \"./reminder\";\nimport {\n  taskAddLink,\n  taskArchive,\n  taskCreate,\n  taskGetById,\n  taskList,\n  taskListEvents,\n  taskRemoveLink,\n  taskStats,\n  taskUpdate,\n} from \"./task\";\n\nexport default {\n  admin,\n  client: {\n    archive: clientArchive,\n    create: clientCreate,\n    getById: clientGetById,\n    getUploadUrl: clientGetUploadUrl,\n    list: clientList,\n    listEvents: clientListEvents,\n    update: clientUpdate,\n  },\n  notification: {\n    list: notificationList,\n    markAllRead: notificationMarkAllRead,\n    markRead: notificationMarkRead,\n  },\n  reminder: {\n    archive: reminderArchive,\n    create: reminderCreate,\n    list: reminderList,\n  },\n  task: {\n    addLink: taskAddLink,\n    archive: taskArchive,\n    create: taskCreate,\n    getById: taskGetById,\n    list: taskList,\n    listEvents: taskListEvents,\n    removeLink: taskRemoveLink,\n    stats: taskStats,\n    update: taskUpdate,\n  },\n};\n```\n\n**Key observation**: The `admin` namespace is imported as `* as admin` (a namespace import), not destructured into named properties like other namespaces. This means it is mounted as `admin.createUser`, `admin.updateUser`, `admin.listUsers`, `admin.archiveUser`, `admin.listRoles`, `admin.resetPassword`.\n\n---\n\n## 2. RPC Client — `/home/aditya/projects/alpauls-ats/src/rpc/client.ts`\n\n```ts\nimport { createORPCClient } from \"@orpc/client\";\nimport { RPCLink } from \"@orpc/client/fetch\";\nimport type { RouterClient } from \"@orpc/server\";\nimport { createRouterClient } from \"@orpc/server\";\nimport { createTanstackQueryUtils } from \"@orpc/tanstack-query\";\nimport { createIsomorphicFn } from \"@tanstack/react-start\";\nimport { getRequestHeaders } from \"@tanstack/react-start/server\";\n\nimport router from \"@/rpc/router\";\n\nconst getORPCClient = createIsomorphicFn()\n  .server(() =>\n    createRouterClient(router, {\n      context: () => ({\n        headers: getRequestHeaders(),\n      }),\n    }),\n  )\n  .client((): RouterClient<typeof router> => {\n    const link = new RPCLink({\n      url: `${window.location.origin}/api/rpc`,\n    });\n    return createORPCClient(link);\n  });\n\nexport const client: RouterClient<typeof router> = getORPCClient();\n\nexport const rpc = createTanstackQueryUtils(client);\n```\n\n---\n\n## 3. Middleware / Procedure Chain — `/home/aditya/projects/alpauls-ats/src/rpc/middleware.ts`\n\n```ts\nimport { ORPCError } from \"@orpc/server\";\n\nimport type { Action, Resource } from \"@/lib/auth/access-control\";\nimport { auth } from \"@/lib/auth/server\";\nimport type { SubordinateCache } from \"@/services/supervisor-hierarchy-service\";\n\nimport { type AuthContext, base } from \"./context\";\n\ntype PermissionMeta = {\n  permission?: { resource: Resource; action: Action };\n};\n\nconst baseWithMeta = base.$meta<PermissionMeta>({});\n\nexport const authMiddleware = baseWithMeta.middleware(\n  async ({ context, next }) => {\n    const sessionData = await auth.api.getSession({\n      headers: context.headers || {},\n    });\n\n    if (!sessionData?.session || !sessionData?.user) {\n      throw new ORPCError(\"UNAUTHORIZED\", {\n        message: \"You must be signed in\",\n      });\n    }\n\n    const { session, user } = sessionData;\n    const subordinateCache: SubordinateCache = new Map();\n    return next({\n      context: { session, subordinateCache, user } satisfies AuthContext,\n    });\n  },\n);\n\nexport const protectedProcedure = baseWithMeta\n  .use(authMiddleware)\n  .use(async ({ context, next, procedure }) => {\n    const required = procedure[\"~orpc\"].meta.permission;\n    if (!required) return next();\n    if (\n      context.user.permissions.includes(\n        `${required.resource}:${required.action}`,\n      )\n    ) {\n      return next();\n    }\n\n    throw new ORPCError(\"FORBIDDEN\", {\n      data: { requiredPermission: required },\n      message: `Missing permission: ${required.resource}:${required.action}`,\n    });\n  });\n```\n\n**Key pattern**: `protectedProcedure` chains auth + permission checks. Permissions are stored on `context.user.permissions` as an array of `\"resource:action\"` strings. If no `meta.permission` is set, the permission check is skipped (only auth required).\n\n---\n\n## 4. RPC Context — `/home/aditya/projects/alpauls-ats/src/rpc/context.ts`\n\n```ts\nimport { os } from \"@orpc/server\";\n\nimport type { auth } from \"@/lib/auth/server\";\nimport type { SubordinateCache } from \"@/services/supervisor-hierarchy-service\";\n\nexport type AuthContext = {\n  session: typeof auth.$Infer.Session.session;\n  subordinateCache: SubordinateCache;\n  user: typeof auth.$Infer.Session.user;\n};\n\nexport const base = os.$context<{\n  headers: HeadersInit | undefined;\n}>();\n```\n\n---\n\n## 5. RPC Router Files with List Endpoints\n\nAll files in `src/rpc/router/`:\n\n| File | List Endpoint(s) |\n|---|---|\n| `client.ts` | `clientList`, `clientListEvents` |\n| `client-contract.ts` | `contractList`, `contractListEvents` |\n| `prospect.ts` | `prospectList`, `prospectListEvents` |\n| `task.ts` | `taskList`, `taskListEvents` |\n| `notification.ts` | `notificationList` |\n| `reminder.ts` | `reminderList` |\n| `admin.ts` | `listUsers`, `listRoles` |\n\nFull contents of each file have been provided above. Key patterns observed:\n\n- **Cursor-based pagination**: `cursor` (string, optional), `limit` (number 1-100, optional)\n- **Filter pattern**: `filters` object passed to service layer with optional fields\n- **Sort pattern**: `sortBy` (enum), `sortOrder` (\"asc\" | \"desc\")\n- **Permission meta**: Each procedure uses `.meta({ permission: { action, resource } })`\n- **Input schemas**: Defined in `src/rpc/schema/` using Zod\n- **Service delegation**: Handlers call service functions, not direct DB queries (except `admin.ts`)\n\n---\n\n## 6. User Table Schema — `/home/aditya/projects/alpauls-ats/src/schema/auth.ts`\n\n```ts\nimport { relations } from \"drizzle-orm\";\nimport {\n  boolean,\n  foreignKey,\n  index,\n  jsonb,\n  pgTable,\n  text,\n  timestamp,\n} from \"drizzle-orm/pg-core\";\n\nimport type { PermissionSet } from \"@/lib/auth/access-control\";\n\nexport const user = pgTable(\n  \"user\",\n  {\n    banExpires: timestamp(\"ban_expires\"),\n    banned: boolean(\"banned\").default(false),\n    banReason: text(\"ban_reason\"),\n    createdAt: timestamp(\"created_at\").defaultNow().notNull(),\n    email: text(\"email\").notNull().unique(),\n    emailVerified: boolean(\"email_verified\").default(false).notNull(),\n    id: text(\"id\").primaryKey(),\n    image: text(\"image\"),\n    name: text(\"name\").notNull(),\n    permissions: jsonb(\"permissions\").$type<PermissionSet>(),\n    phoneNumber: text(\"phone_number\").unique(),\n    phoneNumberVerified: boolean(\"phone_number_verified\"),\n    role: text(\"role\"),\n    supervisorId: text(\"supervisor_id\"),\n    updatedAt: timestamp(\"updated_at\")\n      .defaultNow()\n      .$onUpdate(() => new Date())\n      .notNull(),\n  },\n  (table) => [\n    foreignKey({\n      columns: [table.supervisorId],\n      foreignColumns: [table.id],\n      name: \"user_supervisor_id_fkey\",\n    }).onDelete(\"set null\"),\n  ],\n);\n\n// Also in the same file: session, account, verification tables\n// and relations: userRelations, sessionRelations, accountRelations\n\nexport const userRelations = relations(user, ({ many, one }) => ({\n  accounts: many(account),\n  sessions: many(session),\n  subordinates: many(user, { relationName: \"supervisor\" }),\n  supervisor: one(user, {\n    fields: [user.supervisorId],\n    references: [user.id],\n    relationName: \"supervisor\",\n  }),\n}));\n```\n\nThe full file (130 lines) includes `session`, `account`, `verification` tables and their relations. The schema is re-exported from `/home/aditya/projects/alpauls-ats/src/schema/index.ts`.\n\n---\n\n## 7. Access Control — `/home/aditya/projects/alpauls-ats/src/lib/auth/access-control.ts`\n\n```ts\nimport { createAccessControl } from \"better-auth/plugins/access\";\nimport { ROLE_DISPLAY_NAMES } from \"../constants\";\n\nexport const ac = createAccessControl({\n  client_contracts: [\"create\", \"read\", \"update\", \"archive\"],\n  clients: [\"create\", \"read\", \"update\", \"archive\"],\n  job_mandates: [\"create\", \"read\", \"update\", \"archive\", \"assign\", \"link_prospect\", \"verify\"],\n  notification: [\"read\", \"update\", \"archive\"],\n  prospects: [\"create\", \"read\", \"update\", \"archive\"],\n  reminders: [\"create\", \"read\", \"archive\"],\n  tasks: [\"create\", \"read\", \"update\", \"archive\", \"assign\"],\n  team_members: [\"create\", \"read\", \"update\", \"archive\", \"manage-roles\"],\n});\n\nexport const roles = {\n  admin: ac.newRole({ /* full permissions on all resources */ }),\n  bd: ac.newRole({ /* bd-specific permissions */ }),\n  caller: ac.newRole({ /* caller-specific permissions */ }),\n  qc: ac.newRole({ /* qc-specific permissions */ }),\n  rm: ac.newRole({ /* rm-specific permissions */ }),\n  sc: ac.newRole({ /* sc-specific permissions */ }),\n  tl: ac.newRole({ /* tl-specific permissions */ }),\n} as const;\n\nexport type RoleCode = keyof typeof roles | \"custom\";\nexport type Statement = typeof ac.statements;\nexport type Resource = keyof Statement;\nexport type Action<S extends Resource = Resource> = Statement[S][number];\nexport type PermissionSet = Record<string, string[]>;\nexport type ResolvedPermissions = string[];\n\nexport function resolvePermissions({ role, permissions }: {\n  role: RoleCode;\n  permissions?: PermissionSet | null;\n}): ResolvedPermissions { /* ... */ }\n\nexport function listPredefinedRoles() { /* ... */ }\n```\n\n**Resources defined**: `client_contracts`, `clients`, `job_mandates`, `notification`, `prospects`, `reminders`, `tasks`, `team_members`\n\n**Key resource for user operations**: `team_members` with actions: `create`, `read`, `update`, `archive`, `manage-roles`\n\n**Roles and their `team_members` permissions**:\n- **admin**: `[\"create\", \"read\", \"update\", \"archive\", \"manage-roles\"]` (full)\n- **bd**: `[\"read\"]`\n- **caller**: `[\"read\"]`\n- **qc**: `[\"read\"]`\n- **rm**: `[\"read\"]`\n- **sc**: `[\"read\"]`\n- **tl**: `[\"read\"]`\n\nOnly `admin` has `create`, `update`, `archive`, and `manage-roles` on `team_members`. All other roles get only `read`.\n\n---\n\n## 8. Auth Server — `/home/aditya/projects/alpauls-ats/src/lib/auth/server.ts`\n\n```ts\nimport { drizzleAdapter } from \"@better-auth/drizzle-adapter\";\nimport { type BetterAuthOptions, betterAuth } from \"better-auth\";\nimport { APIError } from \"better-auth/api\";\nimport { admin, customSession, phoneNumber } from \"better-auth/plugins\";\nimport { tanstackStartCookies } from \"better-auth/tanstack-start\";\nimport { eq } from \"drizzle-orm\";\n\nimport {\n  ac,\n  type RoleCode,\n  resolvePermissions,\n  roles,\n} from \"@/lib/auth/access-control\";\nimport { db } from \"@/lib/db/server\";\nimport * as schema from \"@/schema\";\n\nconst options = {\n  database: drizzleAdapter(db, { provider: \"pg\", schema }),\n  databaseHooks: {\n    user: {\n      create: {\n        before: async (_user, ctx) => {\n          const path = ctx?.path ?? \"\";\n          if (path === \"/admin/create-user\") return;\n          throw new APIError(\"BAD_REQUEST\", { message: \"Signups are disabled\" });\n        },\n      },\n    },\n  },\n  emailAndPassword: { enabled: false },\n  plugins: [\n    phoneNumber({\n      sendOTP: async ({ phoneNumber: phone, code }) => {\n        const [existingUser] = await db.select().from(schema.user).where(eq(schema.user.phoneNumber, phone));\n        if (!existingUser) throw new APIError(\"BAD_REQUEST\", { message: \"No account found\" });\n        if (existingUser.banned) throw new APIError(\"FORBIDDEN\", { message: \"Account is suspended\" });\n        console.log(`[OTP] Phone: ${phone} | Code: ${code}`);\n      },\n    }),\n    admin({ ac, roles }),\n    tanstackStartCookies(),\n  ],\n  session: { expiresIn: 60 * 60 * 24 * 30 },\n  user: {\n    additionalFields: {\n      permissions: { defaultValue: null, input: false, required: false, type: \"json\" },\n      supervisorId: { defaultValue: null, input: false, required: false, type: \"string\" },\n    },\n  },\n} satisfies BetterAuthOptions;\n\nexport const auth = betterAuth({\n  ...options,\n  plugins: [\n    customSession(async ({ user, session }) => {\n      const role = (user.role ?? \"custom\") as RoleCode;\n      const permissions = resolvePermissions({ permissions: user.permissions, role });\n      return { session, user: { ...user, permissions, role } };\n    }, options),\n    ...(options.plugins ?? []),\n  ],\n});\n```\n\n**Key observations**:\n- Self-registration is blocked (only `/admin/create-user` path is allowed)\n- `customSession` plugin injects `permissions` (resolved array) and `role` onto the user object in session\n- Phone + OTP login only; email/password disabled\n- Additional user fields: `permissions` (JSON), `supervisorId` (string)\n- The `auth.$Infer.Session.user` type includes `permissions: string[]` and `role: RoleCode`\n\n---\n\n## 9. User Service in `src/services/`\n\n**There is NO dedicated user service file.** The glob of `src/services/` returns these files:\n\n```\nsrc/services/task-event-service.ts\nsrc/services/prospect-event-service.ts\nsrc/services/task-service.ts\nsrc/services/supervisor-hierarchy-service.ts\nsrc/services/prospect-service.ts\nsrc/services/client-contract-service.ts\nsrc/services/client-event-service.ts\nsrc/services/client-service.ts\nsrc/services/task-link-service.ts\nsrc/services/reminder-service.ts\nsrc/services/notification-service.ts\n```\n\nNo `user-service.ts` or similar exists. User CRUD operations are handled **directly in the `admin.ts` RPC router** (inline DB queries with Drizzle), not delegated to a service layer. The only user-adjacent service is `supervisor-hierarchy-service.ts` which handles subordinate lookups and circular supervisor validation.\n\n---\n\n## 10. Does `src/rpc/router/users.ts` exist?\n\n**No.** There is no `src/rpc/router/users.ts` file. The file listing of `src/rpc/router/` is:\n\n```\nsrc/rpc/router/admin.ts        ← contains createUser, updateUser, listUsers, archiveUser, listRoles, resetPassword\nsrc/rpc/router/client.ts\nsrc/rpc/router/client-contract.ts\nsrc/rpc/router/index.ts\nsrc/rpc/router/notification.ts\nsrc/rpc/router/prospect.ts\nsrc/rpc/router/reminder.ts\nsrc/rpc/router/task.ts\n```\n\nAll user management operations currently live in `admin.ts` and are exposed under the `admin.*` namespace in the router (e.g., `admin.listUsers`, `admin.createUser`).\n\n---\n\n## Summary of Key Architectural Patterns\n\n1. **RPC Router structure**: Flat namespace in `index.ts`. Domain routers export named procedures, then `index.ts` assembles them into a nested object. The `admin` namespace is unique — it's a namespace import (`* as admin`) while others use explicit property assignment.\n\n2. **Procedure chain**: `base` -> `baseWithMeta` -> `protectedProcedure` (auth + permission middleware). Permission checks use `meta: { permission: { resource, action } }`.\n\n3. **List endpoint pattern**: Takes `input` with `cursor`, `limit`, filter fields, `sortBy`, `sortOrder`. Delegates to a service function. Returns cursor-paginated results.\n\n4. **Admin/user operations are an anomaly**: They bypass the service layer and query the DB directly in the RPC router. There is no `user-service.ts`. The `admin.listUsers` endpoint has **no input schema** (no pagination, no filters) and **no cursor-based pagination** — it just returns all users.\n\n5. **User schema**: Lives in `src/schema/auth.ts` with `permissions` (jsonb), `supervisorId`, `role`, `banned`, `banReason`, `banExpires` fields. Self-referential FK for supervisor hierarchy.\n\n6. **Access control**: `team_members` resource with actions `create`, `read`, `update`, `archive`, `manage-roles`. Only `admin` role has full access; all other roles get only `read`.",
+          "time": {
+            "start": 1779013292411,
+            "end": 1779013340543
+          },
+          "id": "prt_e3574917b001dA4TipI12J7SAe",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35748991001APyU01Vq4YkGkg"
+        },
+        {
+          "reason": "stop",
+          "snapshot": "21a524e87899fbdd54dddb73252fd752c85d3921",
+          "type": "step-finish",
+          "tokens": {
+            "total": 27893,
+            "input": 675,
+            "output": 3906,
+            "reasoning": 16,
+            "cache": {
+              "write": 0,
+              "read": 23296
+            }
+          },
+          "cost": 0,
+          "id": "prt_e35754da0001EMqvVLi0uJionV",
+          "sessionID": "ses_1ca8bc5ceffeIA4LSKQc7HR4Nh",
+          "messageID": "msg_e35748991001APyU01Vq4YkGkg"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+I need to understand the existing RPC architecture and user-related code in this project. Please explore thoroughly and return:
+
+1. The full contents of `src/rpc/router/index.ts` - the main RPC router
+2. The full contents of `src/rpc/client.ts` - the RPC client
+3. The full contents of `src/rpc/middleware.ts` - the procedure chain
+4. The full contents of `src/rpc/context.ts` - the RPC context
+5. Find and show any existing RPC route files that implement list endpoints (like client.list) - check `src/rpc/router/` for all files
+6. The user-related schema in `src/schema/` - find and show the user table schema
+7. The access control file `src/lib/auth/access-control.ts` - show the resources, actions, and permission definitions
+8. The auth server file `src/lib/auth/server.ts` - to understand user model
+9. Any existing user service in `src/services/`
+10. Check if there's already a `src/rpc/router/users.ts` file
+
+Return ALL file contents in full - do not truncate or summarize. This is critical for planning.

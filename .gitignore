@@ -14,8 +14,6 @@ dist-ssr
 
 __unconfig*
 
-.zed
-.vscode
 .expect
 .agents
 .sandcastle
